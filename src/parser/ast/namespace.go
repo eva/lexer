@@ -5,6 +5,7 @@ type NamespaceSet []NamespaceKind
 type NamespaceStack NamespaceSet
 
 type NamespaceKind interface {
+	GetTokens() TokenSet
 	RegisterToken(token TokenKind) error
 	Validate() error
 }
@@ -12,6 +13,10 @@ type NamespaceKind interface {
 type Namespace struct {
 	Identity NamespaceIdentity
 	Tokens   TokenSet
+}
+
+func (n Namespace) GetTokens() TokenSet {
+	return n.Tokens
 }
 
 func (n Namespace) RegisterToken(token TokenKind) error {

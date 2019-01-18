@@ -7,10 +7,17 @@ import (
 )
 
 func TestTokenise(test *testing.T) {
-	tokenset := ast.TokenSet{
-		ast.TokenLiteral{Token: ast.Token{Identity: 1}, Literal: "foo"},
-		ast.TokenLiteral{Token: ast.Token{Identity: 2}, Literal: "thing"},
-		ast.TokenLiteral{Token: ast.Token{Identity: 3}, Literal: "some"},
+	grammar := ast.Grammar{
+		Namespaces: ast.NamespaceSet{
+			ast.Namespace{
+				Identity: "root",
+				Tokens: ast.TokenSet{
+					ast.TokenLiteral{Token: ast.Token{Identity: 1}, Literal: "foo"},
+					ast.TokenLiteral{Token: ast.Token{Identity: 2}, Literal: "thing"},
+					ast.TokenLiteral{Token: ast.Token{Identity: 3}, Literal: "some"},
+				},
+			},
+		},
 	}
 
 	dataset := []struct {
@@ -27,12 +34,13 @@ func TestTokenise(test *testing.T) {
 		{"somes", false, 1, 4},
 		{"something", true, 2, 9},
 		{"another-foo", false, 0, 0},
+		{"somesomethingfoosome", true, 5, 20},
 	}
 
 	for i, data := range dataset {
 		i = i + 1
 
-		lexemesequence, index, err := Tokenise(data.input, tokenset)
+		lexemesequence, index, err := Tokenise(grammar, data.input)
 
 		if data.suceed == true && err != nil {
 			test.Errorf(`[%d] Expected to suceed but failed with error %v`, i, err)
@@ -57,7 +65,7 @@ func TestTokenise(test *testing.T) {
 }
 
 func TestTokeniseFirstToken(test *testing.T) {
-	tokenset := ast.TokenSet{
+	tokens := ast.TokenSet{
 		ast.TokenLiteral{Token: ast.Token{Identity: 1}, Literal: "foo"},
 		ast.TokenLiteral{Token: ast.Token{Identity: 2}, Literal: "thing"},
 		ast.TokenLiteral{Token: ast.Token{Identity: 3}, Literal: "some"},
@@ -81,7 +89,7 @@ func TestTokeniseFirstToken(test *testing.T) {
 	for i, data := range dataset {
 		i = i + 1
 
-		matched, lexeme := TokeniseFirstLexeme(data.input, tokenset)
+		matched, lexeme := TokeniseFirstLexeme(data.input, tokens)
 
 		if matched != data.matched {
 			test.Errorf(`[%d] Matched %v is expected to be %v`, i, matched, data.matched)

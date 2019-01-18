@@ -6,12 +6,22 @@ import (
 	"./ast"
 )
 
-var TokeniseNoMatchError = errors.New("Tokeniser could not match a token in the token set")
+// ErrTokeniserCannotMatchToken is thrown by the Tokenise() function when the tokenisation
+// cannot match any TokenKind within the active namespace.
+var ErrTokeniserCannotMatchToken = errors.New("Tokeniser failed to match any tokens in the active namespace")
 
-func Tokenise(input string, tokenset ast.TokenSet) (LexemeSequence, int, error) {
+func Tokenise(grammar ast.GrammarKind, input string) (LexemeSequence, int, error) {
 	sequence := LexemeSequence{}
 	length := len(input)
 	index := 0
+
+	namespace, err := grammar.RootNamespace()
+
+	if err != nil {
+		return sequence, index, err
+	}
+
+	tokens := namespace.GetTokens()
 
 	for {
 		if (index + 1) > length {
@@ -19,10 +29,10 @@ func Tokenise(input string, tokenset ast.TokenSet) (LexemeSequence, int, error) 
 		}
 
 		fragment := input[index:]
-		matched, lexeme := TokeniseFirstLexeme(fragment, tokenset)
+		matched, lexeme := TokeniseFirstLexeme(fragment, tokens)
 
 		if matched == false {
-			return sequence, index, TokeniseNoMatchError
+			return sequence, index, ErrTokeniserCannotMatchToken
 		}
 
 		offset := lexeme.Offset
@@ -34,8 +44,8 @@ func Tokenise(input string, tokenset ast.TokenSet) (LexemeSequence, int, error) 
 	return sequence, index, nil
 }
 
-func TokeniseFirstLexeme(input string, tokenset ast.TokenSet) (bool, Lexeme) {
-	for _, token := range tokenset {
+func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, Lexeme) {
+	for _, token := range tokens {
 		matched, offset := token.Match(input)
 
 		if matched == false {
