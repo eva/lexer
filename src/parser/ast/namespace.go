@@ -1,26 +1,23 @@
 package ast
 
-// A Namespace is a type of token set that limits the active tokens when parsing.
+type NamespaceIdentity string
+type NamespaceSet []NamespaceKind
+type NamespaceStack NamespaceSet
+
+type NamespaceKind interface {
+	RegisterToken(token TokenKind) error
+	Validate() error
+}
+
 type Namespace struct {
-	identity string
-	tokens   TokenSet
+	Identity NamespaceIdentity
+	Tokens   TokenSet
 }
 
-func NewNamespace(identity string) Namespace {
-	namespace := Namespace{}
-	namespace.identity = identity
-
-	return namespace
+func (n Namespace) RegisterToken(token TokenKind) error {
+	return nil
 }
 
-func NewNamespaceRoot() Namespace {
-	return NewNamespace("root")
-}
-
-func (namespace Namespace) Identity() string {
-	return namespace.identity
-}
-
-func (namespace Namespace) Tokens() TokenSet {
-	return namespace.tokens
+func (n Namespace) Validate() error {
+	return nil
 }

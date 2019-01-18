@@ -7,12 +7,10 @@ import (
 )
 
 func TestTokenise(test *testing.T) {
-	root := ast.NewNamespaceRoot()
-
 	tokenset := ast.TokenSet{
-		ast.NewTokenLiteral(1, root, "foo"),
-		ast.NewTokenLiteral(2, root, "thing"),
-		ast.NewTokenLiteral(3, root, "some"),
+		ast.TokenLiteral{Token: ast.Token{Identity: 1}, Literal: "foo"},
+		ast.TokenLiteral{Token: ast.Token{Identity: 2}, Literal: "thing"},
+		ast.TokenLiteral{Token: ast.Token{Identity: 3}, Literal: "some"},
 	}
 
 	dataset := []struct {
@@ -59,12 +57,10 @@ func TestTokenise(test *testing.T) {
 }
 
 func TestTokeniseFirstToken(test *testing.T) {
-	root := ast.NewNamespaceRoot()
-
 	tokenset := ast.TokenSet{
-		ast.NewTokenLiteral(1, root, "foo"),
-		ast.NewTokenLiteral(2, root, "thing"),
-		ast.NewTokenLiteral(3, root, "some"),
+		ast.TokenLiteral{Token: ast.Token{Identity: 1}, Literal: "foo"},
+		ast.TokenLiteral{Token: ast.Token{Identity: 2}, Literal: "thing"},
+		ast.TokenLiteral{Token: ast.Token{Identity: 3}, Literal: "some"},
 	}
 
 	dataset := []struct {
@@ -96,8 +92,8 @@ func TestTokeniseFirstToken(test *testing.T) {
 			continue
 		}
 
-		identity := lexeme.Token().Identity()
-		value := lexeme.Value()
+		identity := lexeme.Token.GetIdentity()
+		value := lexeme.Value
 
 		if identity != data.tokenid {
 			test.Errorf(`[%d] Lexeme token identity %v is expected to be %v`, i, identity, data.tokenid)

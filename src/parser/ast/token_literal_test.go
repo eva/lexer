@@ -2,55 +2,12 @@ package ast
 
 import "testing"
 
-func TestTokeLiteral_InstanceOfTokenInterface(test *testing.T) {
+func TestTokeLiteral_IsTokenKind(test *testing.T) {
 	var token interface{} = TokenLiteral{}
-	_, instanceof := token.(Token)
+	_, instanceof := token.(TokenKind)
 
 	if instanceof == false {
-		test.Errorf(`The "TokenLiteral" is not an instance of "Token"!`)
-		return
-	}
-}
-
-func TestTokenLister_TokenInterfaceMethods(test *testing.T) {
-	namespace := Namespace{
-		identity: "asdf",
-	}
-
-	token := TokenLiteral{
-		identity:  1,
-		namespace: namespace,
-		literal:   "foo",
-	}
-
-	if token.Identity() != 1 {
-		test.Errorf(`Expected token identity to return given data`)
-		return
-	}
-
-	if token.Namespace().Identity() != "asdf" {
-		test.Errorf(`Expected token namespace to return given data`)
-		return
-	}
-
-	if a, b := token.Transition(); a != false || b != "" {
-		test.Errorf(`Expected token transition to return false for an empty transition`)
-		return
-	}
-
-	if token.Literal() != "foo" {
-		test.Errorf(`Expected token literal to return given data`)
-		return
-	}
-}
-
-func TestTokenLister_TransitionTrue(test *testing.T) {
-	token := TokenLiteral{
-		transition: "new-transition",
-	}
-
-	if a, b := token.Transition(); a != true || b != "new-transition" {
-		test.Errorf(`Expected token transition to return true for an given data`)
+		test.Error(`Expected TokenLiteral to be of TokenKind`)
 		return
 	}
 }
@@ -76,7 +33,7 @@ func TestTokenLiteral_Match(test *testing.T) {
 		i = i + 1
 
 		token := TokenLiteral{
-			literal: data.expression,
+			Literal: data.expression,
 		}
 
 		matched, offset := token.Match(data.input)

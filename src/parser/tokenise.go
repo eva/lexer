@@ -25,7 +25,7 @@ func Tokenise(input string, tokenset ast.TokenSet) (LexemeSequence, int, error) 
 			return sequence, index, TokeniseNoMatchError
 		}
 
-		offset := lexeme.Offset()
+		offset := lexeme.Offset
 		index = index + (offset[0] + offset[1])
 
 		sequence = append(sequence, lexeme)
@@ -47,10 +47,14 @@ func TokeniseFirstLexeme(input string, tokenset ast.TokenSet) (bool, Lexeme) {
 		}
 
 		value := input[0:offset[1]]
-		lexeme := NewLexeme(token, offset, value)
+		lexeme := Lexeme{
+			Token:  token,
+			Offset: offset,
+			Value:  value,
+		}
 
 		return true, lexeme
 	}
 
-	return false, nil
+	return false, Lexeme{}
 }
