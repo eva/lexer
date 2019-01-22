@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"regexp"
 	"testing"
 
 	"./ast"
@@ -15,6 +16,7 @@ func TestTokenise(test *testing.T) {
 					ast.TokenLiteral{Token: ast.Token{Identity: 1}, Literal: "foo"},
 					ast.TokenLiteral{Token: ast.Token{Identity: 2}, Literal: "thing"},
 					ast.TokenLiteral{Token: ast.Token{Identity: 3}, Literal: "some"},
+					ast.TokenRegex{Token: ast.Token{Identity: 4}, Expression: regexp.MustCompile(`b(ox|atter)`)},
 				},
 			},
 		},
@@ -35,12 +37,17 @@ func TestTokenise(test *testing.T) {
 		{"something", true, 2, 9},
 		{"another-foo", false, 0, 0},
 		{"somesomethingfoosome", true, 5, 20},
+
+		{"bax", false, 0, 0},
+		{"boxatter", false, 1, 3},
+		{"battery", false, 1, 6},
+		{"batterfooboxsome", true, 4, 16},
 	}
 
 	for i, data := range dataset {
 		i = i + 1
 
-		lexemesequence, index, err := Tokenise(grammar, data.input)
+		sequence, index, err := Tokenise(grammar, data.input)
 
 		if data.suceed == true && err != nil {
 			test.Errorf(`[%d] Expected to suceed but failed with error %v`, i, err)
@@ -57,9 +64,72 @@ func TestTokenise(test *testing.T) {
 			return
 		}
 
-		if len(lexemesequence) != data.lexemes {
-			test.Errorf(`[%d] LexemeSequence length %v is expected to be %v`, i, len(lexemesequence), data.lexemes)
+		if len(sequence) != data.lexemes {
+			test.Errorf(`[%d] LexemeSequence length %v is expected to be %v`, i, len(sequence), data.lexemes)
 			return
+		}
+	}
+}
+
+func TestTokeniseTraverseNamespace_StringQuoteExample(test *testing.T) {
+	grammar := ast.Grammar{
+		Namespaces: ast.NamespaceSet{
+			ast.Namespace{
+				Identity: "root",
+				Tokens: ast.TokenSet{
+					ast.TokenLiteral{Token: ast.Token{Identity: 1, TransitionTo: "string-double-quoted"}, Literal: `"`},
+				},
+			},
+			ast.Namespace{
+				Identity: "string-double-quoted",
+				Tokens: ast.TokenSet{
+					ast.TokenLiteral{Token: ast.Token{Identity: 100, TransitionTo: ast.NamespaceIdentityShift}, Literal: `"`},
+					ast.TokenRegex{Token: ast.Token{Identity: 2}, Expression: regexp.MustCompile(`(\\\"|[^"])+`)},
+				},
+			},
+		},
+	}
+
+	dataset := []struct {
+		input    string
+		matched  bool
+		haserror bool
+		tokens   []ast.TokenIdentity
+	}{
+		{``, false, false, []ast.TokenIdentity{}},
+		{`"`, true, true, []ast.TokenIdentity{1}},
+		{`""`, true, false, []ast.TokenIdentity{1, 100}},
+		{`"a`, true, true, []ast.TokenIdentity{1, 2}},
+		{`"a"`, true, false, []ast.TokenIdentity{1, 2, 100}},
+		{`"a\""`, true, false, []ast.TokenIdentity{1, 2, 100}},
+	}
+
+	for i, data := range dataset {
+		i = i + 1
+
+		sequence, _, err := Tokenise(grammar, data.input)
+
+		if data.haserror == true && err == ErrTokeniserFinishedNotRoot {
+			return
+		}
+
+		if data.matched != false && err != nil {
+			test.Errorf(`[%d] Was not expecting to have an error: %v`, i, err)
+			return
+		}
+
+		if len(data.tokens) != len(sequence) {
+			test.Errorf(`[%d] Expecting that length of sequence is %d but got %d`, i, len(data.tokens), len(sequence))
+			return
+		}
+
+		for position, lexeme := range sequence {
+			token := data.tokens[position]
+
+			if lexeme.Token.GetIdentity() != token {
+				test.Errorf(`[%d] @%d Token %v was expected but got %v`, i, position, token, lexeme.Token.GetIdentity())
+				return
+			}
 		}
 	}
 }

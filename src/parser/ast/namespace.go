@@ -1,10 +1,15 @@
 package ast
 
 type NamespaceIdentity string
+
+var NamespaceIdentityNone NamespaceIdentity = ""
+var NamespaceIdentityShift NamespaceIdentity = "<<"
+
 type NamespaceSet []NamespaceKind
 type NamespaceStack NamespaceSet
 
 type NamespaceKind interface {
+	GetIdentity() NamespaceIdentity
 	GetTokens() TokenSet
 	RegisterToken(token TokenKind) error
 	Validate() error
@@ -13,6 +18,10 @@ type NamespaceKind interface {
 type Namespace struct {
 	Identity NamespaceIdentity
 	Tokens   TokenSet
+}
+
+func (n Namespace) GetIdentity() NamespaceIdentity {
+	return n.Identity
 }
 
 func (n Namespace) GetTokens() TokenSet {

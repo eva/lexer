@@ -27,6 +27,12 @@ func (g Grammar) RootNamespace() (namespace NamespaceKind, err error) {
 }
 
 func (g Grammar) Namespace(id NamespaceIdentity) (found bool, namespace NamespaceKind) {
+	for _, namespace := range g.Namespaces {
+		if namespace.GetIdentity() == id {
+			return true, namespace
+		}
+	}
+
 	return false, nil
 }
 

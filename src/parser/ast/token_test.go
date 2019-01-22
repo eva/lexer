@@ -21,7 +21,7 @@ func TestToken_CannotTransition(test *testing.T) {
 		return
 	}
 
-	if namespace != "" {
+	if namespace != NamespaceIdentityNone {
 		test.Error(`Expected when the transition is false that an empty NamespaceIdentity is returned`)
 		return
 	}

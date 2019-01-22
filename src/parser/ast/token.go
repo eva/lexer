@@ -44,8 +44,8 @@ func (t Token) GetIdentity() TokenIdentity {
 // The other case is when a transition should not be made, indicating the next token should be
 // taken from the current active namespace.
 func (t Token) Transition() (should bool, namespace NamespaceIdentity) {
-	if t.TransitionTo == "" {
-		return false, ""
+	if t.TransitionTo == NamespaceIdentityNone {
+		return false, NamespaceIdentityNone
 	}
 
 	return true, t.TransitionTo

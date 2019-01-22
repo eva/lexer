@@ -10,23 +10,30 @@ import (
 // cannot match any TokenKind within the active namespace.
 var ErrTokeniserCannotMatchToken = errors.New("Tokeniser failed to match any tokens in the active namespace")
 
+var ErrTokeniserCannotMoveNamespace = errors.New("Tokeniser failed to transition to another namespace")
+
+var ErrTokeniserFinishedNotRoot = errors.New("Tokeniser finished tokenising but was not left in the root namespace.")
+
 func Tokenise(grammar ast.GrammarKind, input string) (LexemeSequence, int, error) {
 	sequence := LexemeSequence{}
 	length := len(input)
 	index := 0
 
-	namespace, err := grammar.RootNamespace()
+	root, err := grammar.RootNamespace()
 
 	if err != nil {
 		return sequence, index, err
 	}
 
-	tokens := namespace.GetTokens()
+	stack := NamespaceStack{}
+	stack.Register(root)
 
 	for {
 		if (index + 1) > length {
 			break
 		}
+
+		tokens := stack.Current().GetTokens()
 
 		fragment := input[index:]
 		matched, lexeme := TokeniseFirstLexeme(fragment, tokens)
@@ -35,10 +42,30 @@ func Tokenise(grammar ast.GrammarKind, input string) (LexemeSequence, int, error
 			return sequence, index, ErrTokeniserCannotMatchToken
 		}
 
+		transition, newnamespaceid := lexeme.Token.Transition()
+
+		if transition == true {
+			if newnamespaceid == ast.NamespaceIdentityShift {
+				stack.Shift()
+			} else {
+				found, newnamespace := grammar.Namespace(newnamespaceid)
+
+				if found == false {
+					return sequence, index, ErrTokeniserCannotMoveNamespace
+				}
+
+				stack.Register(newnamespace)
+			}
+		}
+
 		offset := lexeme.Offset
 		index = index + (offset[0] + offset[1])
 
 		sequence = append(sequence, lexeme)
+	}
+
+	if stack.Count() != 1 {
+		return sequence, index, ErrTokeniserFinishedNotRoot
 	}
 
 	return sequence, index, nil
