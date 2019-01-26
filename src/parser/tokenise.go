@@ -49,7 +49,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 			panic(`Please make me error`)
 		}
 
-		transition, newnamespaceid := token.Transition()
+		transition, newnamespaceid := token.HasTransition()
 
 		if transition == true {
 			if newnamespaceid == ast.NamespaceIdentityShift {

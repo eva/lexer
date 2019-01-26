@@ -24,7 +24,7 @@ type TokenSet []TokenKind
 // A TokenKind is a kind of lexical token.
 type TokenKind interface {
 	GetIdentity() TokenIdentity
-	Transition() (should bool, namespace NamespaceIdentity)
+	HasTransition() (should bool, namespace NamespaceIdentity)
 	Match(input string) (matched bool, offset TokenOffset)
 }
 
@@ -40,12 +40,12 @@ func (t Token) GetIdentity() TokenIdentity {
 	return t.Identity
 }
 
-// Transition implements TokenKind.Transition()
+// HasTransition implements TokenKind.HasTransition()
 // This method will return true for should when the token should transition to another namespace.
 // In this case the namespace will be NamespaceIdentity that can be looked up against the grammar.
 // The other case is when a transition should not be made, indicating the next token should be
 // taken from the current active namespace.
-func (t Token) Transition() (should bool, namespace NamespaceIdentity) {
+func (t Token) HasTransition() (should bool, namespace NamespaceIdentity) {
 	if t.TransitionTo == NamespaceIdentityNone {
 		return false, NamespaceIdentityNone
 	}

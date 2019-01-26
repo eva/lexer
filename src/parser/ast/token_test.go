@@ -14,7 +14,7 @@ func TestToken_IsTokenKind(test *testing.T) {
 
 func TestToken_CannotTransition(test *testing.T) {
 	token := Token{}
-	should, namespace := token.Transition()
+	should, namespace := token.HasTransition()
 
 	if should != false {
 		test.Error(`Expected with no TransitionTo the transition should be false`)
@@ -27,12 +27,12 @@ func TestToken_CannotTransition(test *testing.T) {
 	}
 }
 
-func TestToken_CanTransition(test *testing.T) {
+func TestToken_HasTransition(test *testing.T) {
 	token := Token{
 		TransitionTo: "new-transition",
 	}
 
-	should, namespace := token.Transition()
+	should, namespace := token.HasTransition()
 
 	if should != true {
 		test.Error(`Expected with TransitionTo the transition should be true`)

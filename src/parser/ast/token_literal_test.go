@@ -2,7 +2,7 @@ package ast
 
 import "testing"
 
-func TestTokeLiteral_IsTokenKind(test *testing.T) {
+func TestTokenLiteral_IsTokenKind(test *testing.T) {
 	var token interface{} = TokenLiteral{}
 	_, instanceof := token.(TokenKind)
 

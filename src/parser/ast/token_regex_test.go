@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestTokeRegex_IsTokenKind(test *testing.T) {
+func TestTokenRegex_IsTokenKind(test *testing.T) {
 	var token interface{} = TokenRegex{}
 	_, instanceof := token.(TokenKind)
 

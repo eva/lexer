@@ -2,7 +2,7 @@ package ast
 
 import "testing"
 
-func TestRuleToke_MatchLexemeSequence_BasicFailure(test *testing.T) {
+func TestRuleToken_Match_BasicFailure(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
 	var barTokenIdentity TokenIdentity = 2
 
@@ -38,7 +38,7 @@ func TestRuleToke_MatchLexemeSequence_BasicFailure(test *testing.T) {
 	}
 }
 
-func TestRuleToke_MatchLexemeSequence_BasicSuccess(test *testing.T) {
+func TestRuleToken_Match_BasicSuccess(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
 
 	rule := RuleToken{
@@ -73,7 +73,7 @@ func TestRuleToke_MatchLexemeSequence_BasicSuccess(test *testing.T) {
 	}
 }
 
-func TestRuleToke_MatchLexemeSequence_BasicSuccessLexemeSequenceMutipleMatchSingle(test *testing.T) {
+func TestRuleToken_Match_BasicSuccessLexemeSequenceMutipleMatchSingle(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
 	var barTokenIdentity TokenIdentity = 2
 
