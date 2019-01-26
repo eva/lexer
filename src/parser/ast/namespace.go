@@ -12,8 +12,6 @@ type NamespaceKind interface {
 	GetIdentity() NamespaceIdentity
 	GetToken(id TokenIdentity) (found bool, token TokenKind)
 	GetTokens() TokenSet
-	RegisterToken(token TokenKind) error
-	Validate() error
 }
 
 type Namespace struct {
@@ -37,12 +35,4 @@ func (n Namespace) GetToken(id TokenIdentity) (found bool, token TokenKind) {
 
 func (n Namespace) GetTokens() TokenSet {
 	return n.Tokens
-}
-
-func (n Namespace) RegisterToken(token TokenKind) error {
-	return nil
-}
-
-func (n Namespace) Validate() error {
-	return nil
 }
