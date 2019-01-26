@@ -12,9 +12,10 @@ func TestTokeniseGrammar(test *testing.T) {
 		input  string
 		tokens []ast.TokenIdentity
 	}{
-		{"+", []ast.TokenIdentity{TokenAddition}},
-		{"+ +", []ast.TokenIdentity{TokenAddition, TokenWhitespace, TokenAddition}},
-		{"( + ]", []ast.TokenIdentity{TokenSyntaxParenthesisOpen, TokenWhitespace, TokenAddition, TokenWhitespace, TokenSyntaxSquareBracketClose}},
+		{`+`, []ast.TokenIdentity{TokenAddition}},
+		{`+ +`, []ast.TokenIdentity{TokenAddition, TokenWhitespace, TokenAddition}},
+		{`( + ]`, []ast.TokenIdentity{TokenSyntaxParenthesisOpen, TokenWhitespace, TokenAddition, TokenWhitespace, TokenSyntaxSquareBracketClose}},
+		{`$foo`, []ast.TokenIdentity{TokenDollar, TokenIdentifier}},
 	}
 
 	for i, data := range dataset {

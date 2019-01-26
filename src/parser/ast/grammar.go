@@ -10,15 +10,16 @@ type GrammarKind interface {
 	RootNamespace() (namespace NamespaceKind, err error)
 	Namespace(id NamespaceIdentity) (found bool, namespace NamespaceKind)
 	Token(id TokenIdentity) (found bool, token TokenKind)
-	Validate() error
+	Rule(id RuleIdentity) (found bool, rule RuleKind)
 }
 
 type Grammar struct {
 	Namespaces NamespaceSet
 	Tokens     TokenSet
+	Rules      RuleSet
 }
 
-func (g Grammar) RootNamespace() (namespace NamespaceKind, err error) {
+func (g Grammar) RootNamespace() (NamespaceKind, error) {
 	for _, namespace := range g.Namespaces {
 		return namespace, nil
 	}
@@ -26,7 +27,7 @@ func (g Grammar) RootNamespace() (namespace NamespaceKind, err error) {
 	return nil, ErrGrammarMissingRootNamespace
 }
 
-func (g Grammar) Namespace(id NamespaceIdentity) (found bool, namespace NamespaceKind) {
+func (g Grammar) Namespace(id NamespaceIdentity) (bool, NamespaceKind) {
 	for _, namespace := range g.Namespaces {
 		if namespace.GetIdentity() == id {
 			return true, namespace
@@ -36,10 +37,10 @@ func (g Grammar) Namespace(id NamespaceIdentity) (found bool, namespace Namespac
 	return false, nil
 }
 
-func (g Grammar) Token(id TokenIdentity) (found bool, token TokenKind) {
+func (g Grammar) Token(id TokenIdentity) (bool, TokenKind) {
 	return false, nil
 }
 
-func (g Grammar) Validate() error {
-	return nil
+func (g Grammar) Rule(id RuleIdentity) (bool, RuleKind) {
+	return false, nil
 }

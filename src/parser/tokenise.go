@@ -14,8 +14,8 @@ var ErrTokeniserCannotMoveNamespace = errors.New("Tokeniser failed to transition
 
 var ErrTokeniserFinishedNotRoot = errors.New("Tokeniser finished tokenising but was not left in the root namespace.")
 
-func Tokenise(grammar ast.GrammarKind, input string) (LexemeSequence, int, error) {
-	sequence := LexemeSequence{}
+func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, error) {
+	sequence := ast.LexemeSequence{}
 	length := len(input)
 	index := 0
 
@@ -71,7 +71,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (LexemeSequence, int, error
 	return sequence, index, nil
 }
 
-func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, Lexeme) {
+func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, ast.Lexeme) {
 	for _, token := range tokens {
 		matched, offset := token.Match(input)
 
@@ -84,7 +84,7 @@ func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, Lexeme) {
 		}
 
 		value := input[0:offset[1]]
-		lexeme := Lexeme{
+		lexeme := ast.Lexeme{
 			Token:  token,
 			Offset: offset,
 			Value:  value,
@@ -93,5 +93,5 @@ func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, Lexeme) {
 		return true, lexeme
 	}
 
-	return false, Lexeme{}
+	return false, ast.Lexeme{}
 }

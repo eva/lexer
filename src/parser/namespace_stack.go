@@ -2,6 +2,8 @@ package parser
 
 import "./ast"
 
+// A NamespaceStack represents a history of namespace traversal to get this token.
+// When a token shifts a namespace the stack will shrink.
 type NamespaceStack struct {
 	stack []ast.NamespaceKind
 }

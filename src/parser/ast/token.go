@@ -1,6 +1,6 @@
 package ast
 
-// An TokenOffset represents a set of numbers indicating the start and end of a token value.
+// A TokenOffset represents a set of numbers indicating the start and end of a token value.
 // Typically this will be used as a response from token matching as the value may not be important.
 type TokenOffset [2]int
 
@@ -15,6 +15,8 @@ type TokenIdentity int
 // InvalidTokenIdentity represents an invalid token.
 // Zero is reserved for cases where an invalid token identity is needed.
 const InvalidTokenIdentity TokenIdentity = 0
+
+type TokenIdentitySet []TokenIdentity
 
 // A TokenSet represents a set of TokenKind.
 type TokenSet []TokenKind
