@@ -40,6 +40,22 @@ func TestParseGrammar_BasicExpression(test *testing.T) {
 	log.Printf(`%+v`, node)
 }
 
+func TestParseGrammar_BasicExpressionSelfReference(test *testing.T) {
+	node, err := parser.ParseAny(Grammar, `1+1+1`)
+
+	if err != nil {
+		test.Errorf(`Was not expecting to get error: %v`, err)
+		return
+	}
+
+	if node.GetRuleIdentity() != RuleExpression {
+		test.Errorf(`Expected to match the variable rule %d instead got %v`, RuleExpression, node.GetRuleIdentity())
+		return
+	}
+
+	log.Printf(`%+v`, node)
+}
+
 func TestTokeniseGrammar(test *testing.T) {
 	dataset := []struct {
 		input  string

@@ -14,6 +14,12 @@ const (
 	TokenWhitespace
 	TokenIdentifier
 
+	TokenLiteralFloat
+	TokenLiteralInteger
+	TokenLiteralBooleanTrue
+	TokenLiteralBooleanFalse
+	TokenLiteralNull
+
 	TokenDollar
 
 	TokenSyntaxQuoteSingle
@@ -41,10 +47,17 @@ const (
 const (
 	GrammarRuleRangeLower = iota + 1
 
+	RuleIdentifierBoolean
+	RuleIdentifierNull
+	RuleIdentifierFloat
+	RuleIdentifierInteger
+	RuleIdentifier
+
 	RuleOperator
 
 	RuleVariable
 	RuleExpression
+	RuleExpressionSide
 
 	GrammarRuleRangeUpper
 )
@@ -57,8 +70,15 @@ var Grammar = ast.Grammar{
 			Tokens: ast.TokenSet{
 				ast.TokenRegex{Token: ast.Token{Identity: TokenWhitespace}, Expression: regexp.MustCompile(`\s+`)},
 
+				ast.TokenRegex{Token: ast.Token{Identity: TokenLiteralFloat}, Expression: regexp.MustCompile(`[0-9]+\.[0-9]+`)},
+				ast.TokenRegex{Token: ast.Token{Identity: TokenLiteralInteger}, Expression: regexp.MustCompile(`[0-9]+`)},
+				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralBooleanTrue}, Literal: `true`},
+				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralBooleanFalse}, Literal: `false`},
+				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralNull}, Literal: `null`},
+
 				ast.TokenLiteral{Token: ast.Token{Identity: TokenDollar, TransitionTo: NamespaceVariable}, Literal: `$`},
 
+				ast.TokenLiteral{Token: ast.Token{Identity: TokenSyntaxQuoteSingle}, Literal: `'`},
 				ast.TokenLiteral{Token: ast.Token{Identity: TokenSyntaxQuoteSingle}, Literal: `'`},
 				ast.TokenLiteral{Token: ast.Token{Identity: TokenSyntaxQuoteDouble}, Literal: `"`},
 				ast.TokenLiteral{Token: ast.Token{Identity: TokenSyntaxParenthesisOpen}, Literal: `(`},
@@ -80,24 +100,80 @@ var Grammar = ast.Grammar{
 		},
 	},
 	Rules: ast.RuleSet{
-		ast.RuleConcatenation{ // Expression: 1+1
+		// Expression
+		ast.RuleConcatenation{
 			Rule: ast.Rule{Identity: RuleExpression},
 			Rules: ast.RuleSet{
-				ast.RuleReference{Target: RuleVariable},
-				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}},
-				ast.RuleReference{Target: RuleOperator},
-				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}},
-				ast.RuleReference{Target: RuleVariable},
+				ast.RuleReference{Target: RuleExpressionSide},                    // Left
+				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}, // Whitespace?
+				ast.RuleReference{Target: RuleOperator},                          // Operator
+				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}, // Whitespace?
+				ast.RuleReference{Target: RuleExpressionSide},                    // Right
 			},
 		},
-		ast.RuleConcatenation{ // Variables: $foo
+		// Expresion Side
+		//  This represents all the tokens that can be on either side of an expression.
+		ast.RuleChoice{
+			Rule: ast.Rule{Identity: RuleExpressionSide},
+			Rules: ast.RuleSet{
+				ast.RuleReference{Target: RuleVariable},
+				ast.RuleReference{Target: RuleIdentifier},
+			},
+		},
+		// Variable
+		ast.RuleConcatenation{
 			Rule: ast.Rule{Identity: RuleVariable},
 			Rules: ast.RuleSet{
 				ast.RuleToken{Target: TokenDollar},
 				ast.RuleToken{Target: TokenIdentifier},
 			},
 		},
-		ast.RuleChoice{ // Operators: +/-
+		// Identifer
+		//  A top level rule that includes all types of identifers.
+		ast.RuleChoice{
+			Rule: ast.Rule{Identity: RuleIdentifier},
+			Rules: ast.RuleSet{
+				ast.RuleReference{Target: RuleIdentifierBoolean},
+				ast.RuleReference{Target: RuleIdentifierNull},
+				ast.RuleReference{Target: RuleIdentifierFloat},
+				ast.RuleReference{Target: RuleIdentifierInteger},
+			},
+		},
+		// Identifier Boolean
+		ast.RuleChoice{
+			Rule: ast.Rule{Identity: RuleIdentifierBoolean},
+			Rules: ast.RuleSet{
+				ast.RuleToken{Target: TokenLiteralBooleanFalse},
+				ast.RuleToken{Target: TokenLiteralBooleanTrue},
+			},
+		},
+		// Identifer Null
+		ast.RuleChoice{
+			Rule: ast.Rule{Identity: RuleIdentifierNull},
+			Rules: ast.RuleSet{
+				ast.RuleToken{Target: TokenLiteralNull},
+			},
+		},
+		// Identifer Float
+		//  A float is technically an integer with trailing parts, so its important
+		//  the integer is placed below this rule in heirarchy.
+		ast.RuleChoice{
+			Rule: ast.Rule{Identity: RuleIdentifierFloat},
+			Rules: ast.RuleSet{
+				ast.RuleToken{Target: TokenLiteralFloat},
+			},
+		},
+		// Identifer Integer
+		ast.RuleChoice{
+			Rule: ast.Rule{Identity: RuleIdentifierInteger},
+			Rules: ast.RuleSet{
+				ast.RuleToken{Target: TokenLiteralInteger},
+			},
+		},
+		// Operators
+		//  Some operators can be found as parts of identifers, e.g integers.
+		//  For this reason operators are one of the lowest rules, and slowest to get too.
+		ast.RuleChoice{
 			Rule: ast.Rule{Identity: RuleOperator},
 			Rules: ast.RuleSet{
 				ast.RuleToken{Target: TokenAddition},

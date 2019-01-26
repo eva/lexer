@@ -21,5 +21,5 @@ func ParseAnySequence(grammar ast.GrammarKind, sequence ast.LexemeSequence) (ast
 		}
 	}
 
-	return nil, errors.New(`Eh`)
+	return nil, errors.New(`Failed to parse sequence (mode: any)`)
 }
