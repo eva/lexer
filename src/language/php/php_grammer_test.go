@@ -37,7 +37,7 @@ func TestParseGrammar_BasicExpression(test *testing.T) {
 		return
 	}
 
-	log.Printf(`%+v`, node)
+	log.Printf(`%#v`, node)
 }
 
 func TestParseGrammar_BasicExpressionSelfReference(test *testing.T) {
@@ -53,7 +53,7 @@ func TestParseGrammar_BasicExpressionSelfReference(test *testing.T) {
 		return
 	}
 
-	log.Printf(`%+v`, node)
+	log.Printf(`%#v`, node)
 }
 
 func TestTokeniseGrammar(test *testing.T) {

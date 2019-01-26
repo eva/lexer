@@ -45,7 +45,7 @@ const (
 
 // PHP lexical rules.
 const (
-	GrammarRuleRangeLower = iota + 1
+	GrammarRuleRangeLower ast.RuleIdentity = iota + 1
 
 	RuleIdentifierBoolean
 	RuleIdentifierNull
@@ -114,7 +114,7 @@ var Grammar = ast.Grammar{
 		// Expresion Side
 		//  This represents all the tokens that can be on either side of an expression.
 		ast.RuleChoice{
-			Rule: ast.Rule{Identity: RuleExpressionSide},
+			Rule: ast.Rule{Identity: RuleExpressionSide, Ignore: true},
 			Rules: ast.RuleSet{
 				ast.RuleReference{Target: RuleVariable},
 				ast.RuleReference{Target: RuleIdentifier},

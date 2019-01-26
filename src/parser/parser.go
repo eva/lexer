@@ -14,6 +14,10 @@ func ParseAny(grammar ast.GrammarKind, input string) (ast.NodeKind, error) {
 
 func ParseAnySequence(grammar ast.GrammarKind, sequence ast.LexemeSequence) (ast.NodeKind, error) {
 	for _, rule := range grammar.GetRules() {
+		if rule.ShouldIgnore() {
+			continue
+		}
+
 		matched, _, node, _ := rule.Match(grammar, sequence)
 
 		if matched == true {

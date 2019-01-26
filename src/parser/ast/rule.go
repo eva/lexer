@@ -14,6 +14,7 @@ type RuleSet []RuleKind
 // A rule should contain an identity and be able to see if it matches a lexeme sequence.
 type RuleKind interface {
 	GetIdentity() RuleIdentity
+	ShouldIgnore() bool
 	Match(grammar GrammarKind, sequence LexemeSequence) (matched bool, remaining LexemeSequence, node NodeKind, err error)
 }
 
@@ -21,10 +22,15 @@ var ErrRuleNotMatched = errors.New("The rule did not match")
 
 type Rule struct {
 	Identity RuleIdentity
+	Ignore   bool
 }
 
 func (r Rule) GetIdentity() RuleIdentity {
 	return r.Identity
+}
+
+func (r Rule) ShouldIgnore() bool {
+	return r.Ignore
 }
 
 func (r Rule) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
