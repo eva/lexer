@@ -8,7 +8,7 @@ import (
 	"../../parser/ast"
 )
 
-func TestParseGrammar(test *testing.T) {
+func TestParseGrammar_BasicVariable(test *testing.T) {
 	node, err := parser.ParseAny(Grammar, `$foo`)
 
 	if err != nil {
@@ -18,6 +18,22 @@ func TestParseGrammar(test *testing.T) {
 
 	if node.GetRuleIdentity() != RuleVariable {
 		test.Errorf(`Expected to match the variable rule %d instead got %v`, RuleVariable, node.GetRuleIdentity())
+		return
+	}
+
+	log.Printf(`Node: %+v`, node)
+}
+
+func TestParseGrammar_BasicExpression(test *testing.T) {
+	node, err := parser.ParseAny(Grammar, `$foo - $bar`)
+
+	if err != nil {
+		test.Errorf(`Was not expecting to get error: %v`, err)
+		return
+	}
+
+	if node.GetRuleIdentity() != RuleExpression {
+		test.Errorf(`Expected to match the variable rule %d instead got %v`, RuleExpression, node.GetRuleIdentity())
 		return
 	}
 

@@ -6,6 +6,10 @@ func (sequence LexemeSequence) Count() int {
 	return len(sequence)
 }
 
+func (sequence LexemeSequence) IsEmpty() bool {
+	return sequence.Count() == 0
+}
+
 type LexemeKind interface {
 	GetTokenIdentity() TokenIdentity
 	IsTokenIdentity(id TokenIdentity) bool

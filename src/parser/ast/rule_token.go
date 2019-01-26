@@ -6,6 +6,10 @@ type RuleToken struct {
 }
 
 func (r RuleToken) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
+	if sequence.IsEmpty() {
+		return r.Rule.Match(grammar, sequence)
+	}
+
 	lexeme := sequence[0]
 
 	if lexeme.IsTokenIdentity(r.Target) == false {

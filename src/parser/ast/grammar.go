@@ -39,10 +39,22 @@ func (g Grammar) FindNamespace(id NamespaceIdentity) (bool, NamespaceKind) {
 }
 
 func (g Grammar) FindToken(id TokenIdentity) (bool, TokenKind) {
+	for _, token := range g.Tokens {
+		if token.GetIdentity() == id {
+			return true, token
+		}
+	}
+
 	return false, nil
 }
 
 func (g Grammar) FindRule(id RuleIdentity) (bool, RuleKind) {
+	for _, rule := range g.Rules {
+		if rule.GetIdentity() == id {
+			return true, rule
+		}
+	}
+
 	return false, nil
 }
 

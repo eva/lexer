@@ -41,7 +41,10 @@ const (
 const (
 	GrammarRuleRangeLower = iota + 1
 
+	RuleOperator
+
 	RuleVariable
+	RuleExpression
 
 	GrammarRuleRangeUpper
 )
@@ -77,11 +80,30 @@ var Grammar = ast.Grammar{
 		},
 	},
 	Rules: ast.RuleSet{
+		ast.RuleConcatenation{ // Expression: 1+1
+			Rule: ast.Rule{Identity: RuleExpression},
+			Rules: ast.RuleSet{
+				ast.RuleReference{Target: RuleVariable},
+				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}},
+				ast.RuleReference{Target: RuleOperator},
+				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}},
+				ast.RuleReference{Target: RuleVariable},
+			},
+		},
 		ast.RuleConcatenation{ // Variables: $foo
 			Rule: ast.Rule{Identity: RuleVariable},
 			Rules: ast.RuleSet{
 				ast.RuleToken{Target: TokenDollar},
 				ast.RuleToken{Target: TokenIdentifier},
+			},
+		},
+		ast.RuleChoice{ // Operators: +/-
+			Rule: ast.Rule{Identity: RuleOperator},
+			Rules: ast.RuleSet{
+				ast.RuleToken{Target: TokenAddition},
+				ast.RuleToken{Target: TokenSubtraction},
+				ast.RuleToken{Target: TokenDivision},
+				ast.RuleToken{Target: TokenMultiplication},
 			},
 		},
 	},
