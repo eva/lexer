@@ -2,13 +2,16 @@ package ast
 
 type NodeSequence []NodeKind
 
+func (sequence NodeSequence) Count() int {
+	return len(sequence)
+}
+
 type NodeKind interface {
 	GetRuleIdentity() RuleIdentity
-	GetLexemes() LexemeSequence
-	CountLexemes() int
-	GetNodes() NodeSequence
-	CountNodes() int
-	IsEndNode() bool
+	GetLexemeSequence() LexemeSequence
+	CountLexemeSequence() int
+	GetNodeSequence() NodeSequence
+	CountNodeSequence() int
 }
 
 type Node struct {
@@ -21,22 +24,18 @@ func (n Node) GetRuleIdentity() RuleIdentity {
 	return n.Rule
 }
 
-func (n Node) GetLexemes() LexemeSequence {
+func (n Node) GetLexemeSequence() LexemeSequence {
 	return n.Lexemes
 }
 
-func (n Node) CountLexemes() int {
-	return len(n.Lexemes)
+func (n Node) CountLexemeSequence() int {
+	return n.Lexemes.Count()
 }
 
-func (n Node) GetNodes() NodeSequence {
+func (n Node) GetNodeSequence() NodeSequence {
 	return n.Nodes
 }
 
-func (n Node) CountNodes() int {
-	return len(n.Nodes)
-}
-
-func (n Node) IsEndNode() bool {
-	return n.CountNodes() == 0 && n.CountLexemes() > 0
+func (n Node) CountNodeSequence() int {
+	return n.Nodes.Count()
 }

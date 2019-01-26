@@ -23,17 +23,17 @@ func TestRuleToken_Match_BasicFailure(test *testing.T) {
 	}
 
 	if err != ErrRuleNotMatched {
-		test.Errorf(`Expected "ErrRuleNotMatched" to be returned instead got: %v`, err)
+		test.Errorf(`Expected "ErrRuleNotMatched" to be returned instead got: %+v`, err)
 		return
 	}
 
 	if node != nil {
-		test.Errorf(`Expected failed match to return a nil node, got: %v`, node)
+		test.Errorf(`Expected failed match to return a nil node, got: %+v`, node)
 		return
 	}
 
 	if len(remaining) != 1 {
-		test.Errorf(`Expected remaining lexeme sequence to be the same as given, instead got: %v`, remaining)
+		test.Errorf(`Expected remaining lexeme sequence to be the same as given, instead got: %+v`, remaining)
 		return
 	}
 }
@@ -57,8 +57,8 @@ func TestRuleToken_Match_BasicSuccess(test *testing.T) {
 		return
 	}
 
-	if len(node.GetLexemes()) != 1 {
-		test.Errorf(`Expected the node lexeme sequence to be 1, got %d`, len(node.GetLexemes()))
+	if node.CountLexemeSequence() != 1 {
+		test.Errorf(`Expected the node lexeme sequence to be 1, got %+v`, node.GetLexemeSequence())
 		return
 	}
 
@@ -68,7 +68,7 @@ func TestRuleToken_Match_BasicSuccess(test *testing.T) {
 	}
 
 	if len(remaining) != 0 {
-		test.Errorf(`Expected remaining sequence to be empty, instead got: %v`, remaining)
+		test.Errorf(`Expected remaining sequence to be empty, instead got: %+v`, remaining)
 		return
 	}
 }
@@ -94,8 +94,8 @@ func TestRuleToken_Match_BasicSuccessLexemeSequenceMutipleMatchSingle(test *test
 		return
 	}
 
-	if len(node.GetLexemes()) != 1 {
-		test.Errorf(`Expected the node lexeme sequence to be 1, got %d`, len(node.GetLexemes()))
+	if node.CountLexemeSequence() != 1 {
+		test.Errorf(`Expected the node lexeme sequence to be 1, got %+v`, node.CountLexemeSequence())
 		return
 	}
 
@@ -104,7 +104,7 @@ func TestRuleToken_Match_BasicSuccessLexemeSequenceMutipleMatchSingle(test *test
 		return
 	}
 
-	if node.GetLexemes()[0].GetTokenIdentity() != fooTokenIdentity {
+	if node.GetLexemeSequence()[0].GetTokenIdentity() != fooTokenIdentity {
 		test.Error(`Expected the rule to match the first token`)
 		return
 	}

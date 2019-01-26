@@ -2,6 +2,10 @@ package ast
 
 type LexemeSequence []LexemeKind
 
+func (sequence LexemeSequence) Count() int {
+	return len(sequence)
+}
+
 type LexemeKind interface {
 	GetTokenIdentity() TokenIdentity
 	GetTokenOffset() TokenOffset

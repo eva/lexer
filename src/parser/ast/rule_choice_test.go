@@ -22,27 +22,27 @@ func TestRuleChoice(test *testing.T) {
 	matched, remaining, node, err := rule.Match(grammar, sequence)
 
 	if matched != true {
-		test.Errorf(`Expected match, instead got error: %v`, err)
+		test.Errorf(`Expected match, instead got error: %+v`, err)
 		return
 	}
 
-	if node.CountNodes() != 1 {
-		test.Errorf(`Choice should have one child being the token rule, instead got: %d`, node.GetNodes())
+	if node.CountNodeSequence() != 1 {
+		test.Errorf(`Choice should have one child being the token rule, instead got: %+v`, node.GetNodeSequence())
 		return
 	}
 
-	if node.CountLexemes() != 0 {
-		test.Errorf(`Choice should not have any direct lexemes matched, instead got: %v`, node.GetLexemes())
+	if node.CountLexemeSequence() != 0 {
+		test.Errorf(`Choice should not have any direct lexemes matched, instead got: %+v`, node.GetLexemeSequence())
 		return
 	}
 
-	if node.GetNodes()[0].GetLexemes()[0].GetTokenIdentity() != barTokenIdentity {
+	if node.GetNodeSequence()[0].GetLexemeSequence()[0].GetTokenIdentity() != barTokenIdentity {
 		test.Errorf(`Token did not match expected token`)
 		return
 	}
 
 	if len(remaining) != 0 {
-		test.Errorf(`Expected remaining sequence to be empty, instead got: %v`, remaining)
+		test.Errorf(`Expected remaining sequence to be empty, instead got: %+v`, remaining)
 		return
 	}
 }
