@@ -62,7 +62,7 @@ func TestRuleToken_Match_BasicSuccess(test *testing.T) {
 		return
 	}
 
-	if node.GetRule().GetIdentity() != rule.GetIdentity() {
+	if node.GetRuleIdentity() != rule.GetIdentity() {
 		test.Error(`Expected the matched rule to be itself`)
 		return
 	}
@@ -99,7 +99,7 @@ func TestRuleToken_Match_BasicSuccessLexemeSequenceMutipleMatchSingle(test *test
 		return
 	}
 
-	if node.GetRule().GetIdentity() != rule.GetIdentity() {
+	if node.GetRuleIdentity() != rule.GetIdentity() {
 		test.Error(`Expected the matched rule to be itself`)
 		return
 	}

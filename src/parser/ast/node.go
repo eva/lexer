@@ -3,7 +3,7 @@ package ast
 type NodeSequence []NodeKind
 
 type NodeKind interface {
-	GetRule() RuleKind
+	GetRuleIdentity() RuleIdentity
 	GetLexemes() LexemeSequence
 	CountLexemes() int
 	GetNodes() NodeSequence
@@ -12,12 +12,12 @@ type NodeKind interface {
 }
 
 type Node struct {
-	Rule    RuleKind
+	Rule    RuleIdentity
 	Lexemes LexemeSequence
 	Nodes   NodeSequence
 }
 
-func (n Node) GetRule() RuleKind {
+func (n Node) GetRuleIdentity() RuleIdentity {
 	return n.Rule
 }
 

@@ -14,7 +14,7 @@ func (r RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool, L
 		}
 
 		node := Node{
-			Rule:  r,
+			Rule:  r.GetIdentity(),
 			Nodes: NodeSequence{child},
 		}
 

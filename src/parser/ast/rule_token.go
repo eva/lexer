@@ -13,7 +13,7 @@ func (r RuleToken) Match(grammar GrammarKind, sequence LexemeSequence) (bool, Le
 	}
 
 	node := Node{
-		Rule:    r,
+		Rule:    r.GetIdentity(),
 		Lexemes: LexemeSequence{lexeme},
 	}
 

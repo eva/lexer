@@ -22,7 +22,7 @@ func (r RuleConcatenation) Match(grammar GrammarKind, sequence LexemeSequence) (
 	}
 
 	node := Node{
-		Rule:  r,
+		Rule:  r.GetIdentity(),
 		Nodes: nodes,
 	}
 

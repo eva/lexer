@@ -16,8 +16,8 @@ func TestParseGrammar(test *testing.T) {
 		return
 	}
 
-	if node.GetRule().GetIdentity() != RuleVariable {
-		test.Errorf(`Expected to match the variable rule %d instead got %v`, RuleVariable, node.GetRule().GetIdentity())
+	if node.GetRuleIdentity() != RuleVariable {
+		test.Errorf(`Expected to match the variable rule %d instead got %v`, RuleVariable, node.GetRuleIdentity())
 		return
 	}
 
