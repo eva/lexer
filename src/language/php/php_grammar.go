@@ -6,6 +6,8 @@ import (
 	"../../parser/ast"
 )
 
+// PHP lexical tokens.
+// These are all the valid tokens for the language.
 const (
 	GrammarTokenRangeLower ast.TokenIdentity = iota + 1
 
@@ -29,11 +31,13 @@ const (
 	GrammarTokenRangeUpper
 )
 
+// PHP lexical namespaces.
 const (
 	NamespaceRoot     ast.NamespaceIdentity = "root"
 	NamespaceVariable ast.NamespaceIdentity = "variable"
 )
 
+// PHP lexical rules.
 const (
 	GrammarRuleRangeLower = iota + 1
 
@@ -73,11 +77,11 @@ var Grammar = ast.Grammar{
 		},
 	},
 	Rules: ast.RuleSet{
-		ast.RuleConcatenation{
+		ast.RuleConcatenation{ // Variables: $foo
 			Rule: ast.Rule{Identity: RuleVariable},
 			Rules: ast.RuleSet{
-				ast.RuleToken{Token: TokenDollar},
-				ast.RuleToken{Token: TokenIdentifier},
+				ast.RuleToken{Target: TokenDollar},
+				ast.RuleToken{Target: TokenIdentifier},
 			},
 		},
 	},

@@ -1,11 +1,28 @@
 package php
 
 import (
+	"log"
 	"testing"
 
 	"../../parser"
 	"../../parser/ast"
 )
+
+func TestParseGrammar(test *testing.T) {
+	node, err := parser.ParseAny(Grammar, `$foo`)
+
+	if err != nil {
+		test.Errorf(`Was not expecting to get error: %v`, err)
+		return
+	}
+
+	if node.GetRule().GetIdentity() != RuleVariable {
+		test.Errorf(`Expected to match the variable rule %d instead got %v`, RuleVariable, node.GetRule().GetIdentity())
+		return
+	}
+
+	log.Printf(`%v`, node)
+}
 
 func TestTokeniseGrammar(test *testing.T) {
 	dataset := []struct {

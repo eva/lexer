@@ -11,6 +11,7 @@ type GrammarKind interface {
 	Namespace(id NamespaceIdentity) (found bool, namespace NamespaceKind)
 	Token(id TokenIdentity) (found bool, token TokenKind)
 	Rule(id RuleIdentity) (found bool, rule RuleKind)
+	GetRules() RuleSet
 }
 
 type Grammar struct {
@@ -43,4 +44,8 @@ func (g Grammar) Token(id TokenIdentity) (bool, TokenKind) {
 
 func (g Grammar) Rule(id RuleIdentity) (bool, RuleKind) {
 	return false, nil
+}
+
+func (g Grammar) GetRules() RuleSet {
+	return g.Rules
 }
