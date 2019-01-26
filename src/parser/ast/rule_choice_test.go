@@ -6,8 +6,6 @@ func TestRuleChoice(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
 	var barTokenIdentity TokenIdentity = 2
 
-	barToken := TokenLiteral{Token: Token{Identity: barTokenIdentity}, Literal: `bar`}
-
 	fooRule := RuleToken{Target: fooTokenIdentity}
 	barRule := RuleToken{Target: barTokenIdentity}
 
@@ -18,7 +16,7 @@ func TestRuleChoice(test *testing.T) {
 
 	grammar := Grammar{}
 	sequence := LexemeSequence{
-		Lexeme{Token: barToken},
+		Lexeme{Token: barTokenIdentity},
 	}
 
 	matched, remaining, node, err := rule.Match(grammar, sequence)
@@ -38,7 +36,7 @@ func TestRuleChoice(test *testing.T) {
 		return
 	}
 
-	if node.GetNodes()[0].GetLexemes()[0].Token.GetIdentity() != barTokenIdentity {
+	if node.GetNodes()[0].GetLexemes()[0].GetTokenIdentity() != barTokenIdentity {
 		test.Errorf(`Token did not match expected token`)
 		return
 	}

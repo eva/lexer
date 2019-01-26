@@ -6,15 +6,13 @@ func TestRuleToke_MatchLexemeSequence_BasicFailure(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
 	var barTokenIdentity TokenIdentity = 2
 
-	fooToken := TokenLiteral{Token: Token{Identity: fooTokenIdentity}, Literal: `foo`}
-
 	rule := RuleToken{
 		Target: barTokenIdentity,
 	}
 
 	grammar := Grammar{}
 	sequence := LexemeSequence{
-		Lexeme{Token: fooToken},
+		Lexeme{Token: fooTokenIdentity},
 	}
 
 	matched, remaining, node, err := rule.Match(grammar, sequence)
@@ -43,15 +41,13 @@ func TestRuleToke_MatchLexemeSequence_BasicFailure(test *testing.T) {
 func TestRuleToke_MatchLexemeSequence_BasicSuccess(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
 
-	fooToken := TokenLiteral{Token: Token{Identity: fooTokenIdentity}, Literal: `foo`}
-
 	rule := RuleToken{
 		Target: fooTokenIdentity,
 	}
 
 	grammar := Grammar{}
 	sequence := LexemeSequence{
-		Lexeme{Token: fooToken},
+		Lexeme{Token: fooTokenIdentity},
 	}
 
 	matched, remaining, node, err := rule.Match(grammar, sequence)
@@ -81,17 +77,14 @@ func TestRuleToke_MatchLexemeSequence_BasicSuccessLexemeSequenceMutipleMatchSing
 	var fooTokenIdentity TokenIdentity = 1
 	var barTokenIdentity TokenIdentity = 2
 
-	fooToken := TokenLiteral{Token: Token{Identity: fooTokenIdentity}, Literal: `foo`}
-	barToken := TokenLiteral{Token: Token{Identity: barTokenIdentity}, Literal: `bar`}
-
 	rule := RuleToken{
 		Target: fooTokenIdentity,
 	}
 
 	grammar := Grammar{}
 	sequence := LexemeSequence{
-		Lexeme{Token: fooToken},
-		Lexeme{Token: barToken},
+		Lexeme{Token: fooTokenIdentity},
+		Lexeme{Token: barTokenIdentity},
 	}
 
 	matched, remaining, node, err := rule.Match(grammar, sequence)
@@ -111,7 +104,7 @@ func TestRuleToke_MatchLexemeSequence_BasicSuccessLexemeSequenceMutipleMatchSing
 		return
 	}
 
-	if node.GetLexemes()[0].Token.GetIdentity() != fooTokenIdentity {
+	if node.GetLexemes()[0].GetTokenIdentity() != fooTokenIdentity {
 		test.Error(`Expected the rule to match the first token`)
 		return
 	}

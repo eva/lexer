@@ -126,8 +126,8 @@ func TestTokeniseTraverseNamespace_StringQuoteExample(test *testing.T) {
 		for position, lexeme := range sequence {
 			token := data.tokens[position]
 
-			if lexeme.Token.GetIdentity() != token {
-				test.Errorf(`[%d] @%d Token %v was expected but got %v`, i, position, token, lexeme.Token.GetIdentity())
+			if lexeme.GetTokenIdentity() != token {
+				test.Errorf(`[%d] @%d Token %v was expected but got %v`, i, position, token, lexeme.GetTokenIdentity())
 				return
 			}
 		}
@@ -170,8 +170,8 @@ func TestTokeniseFirstToken(test *testing.T) {
 			continue
 		}
 
-		identity := lexeme.Token.GetIdentity()
-		value := lexeme.Value
+		identity := lexeme.GetTokenIdentity()
+		value := lexeme.GetValue()
 
 		if identity != data.tokenid {
 			test.Errorf(`[%d] Lexeme token identity %v is expected to be %v`, i, identity, data.tokenid)

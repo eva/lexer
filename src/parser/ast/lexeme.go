@@ -1,15 +1,32 @@
 package ast
 
-type LexemeSequence []Lexeme
+type LexemeSequence []LexemeKind
+
+type LexemeKind interface {
+	GetTokenIdentity() TokenIdentity
+	GetTokenOffset() TokenOffset
+	GetValue() string
+	IsTokenIdentity(id TokenIdentity) bool
+}
 
 type Lexeme struct {
-	Token  TokenKind
+	Token  TokenIdentity
 	Offset TokenOffset
 	Value  string
 }
 
-func (l Lexeme) IsToken(id TokenIdentity) bool {
-	tokenid := l.Token.GetIdentity()
+func (l Lexeme) GetTokenIdentity() TokenIdentity {
+	return l.Token
+}
 
-	return tokenid == id
+func (l Lexeme) GetTokenOffset() TokenOffset {
+	return l.Offset
+}
+
+func (l Lexeme) GetValue() string {
+	return l.Value
+}
+
+func (l Lexeme) IsTokenIdentity(id TokenIdentity) bool {
+	return l.Token == id
 }

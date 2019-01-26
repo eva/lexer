@@ -6,8 +6,6 @@ func TestRuleConcatenation_MissingPart(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
 	var barTokenIdentity TokenIdentity = 2
 
-	barToken := TokenLiteral{Token: Token{Identity: barTokenIdentity}, Literal: `bar`}
-
 	fooRule := RuleToken{Target: fooTokenIdentity}
 	barRule := RuleToken{Target: barTokenIdentity}
 
@@ -17,7 +15,7 @@ func TestRuleConcatenation_MissingPart(test *testing.T) {
 
 	grammar := Grammar{}
 	sequence := LexemeSequence{
-		Lexeme{Token: barToken},
+		Lexeme{Token: barTokenIdentity},
 	}
 
 	matched, _, _, _ := rule.Match(grammar, sequence)
@@ -32,9 +30,6 @@ func TestRuleConcatenation_AllPartsMatched(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
 	var barTokenIdentity TokenIdentity = 2
 
-	fooToken := TokenLiteral{Token: Token{Identity: fooTokenIdentity}, Literal: `foo`}
-	barToken := TokenLiteral{Token: Token{Identity: barTokenIdentity}, Literal: `bar`}
-
 	fooRule := RuleToken{Target: fooTokenIdentity}
 	barRule := RuleToken{Target: barTokenIdentity}
 
@@ -44,8 +39,8 @@ func TestRuleConcatenation_AllPartsMatched(test *testing.T) {
 
 	grammar := Grammar{}
 	sequence := LexemeSequence{
-		Lexeme{Token: fooToken},
-		Lexeme{Token: barToken},
+		Lexeme{Token: fooTokenIdentity},
+		Lexeme{Token: barTokenIdentity},
 	}
 
 	matched, _, _, err := rule.Match(grammar, sequence)

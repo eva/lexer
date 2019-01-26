@@ -21,7 +21,7 @@ func TestParseGrammar(test *testing.T) {
 		return
 	}
 
-	log.Printf(`%v`, node)
+	log.Printf(`Node: %+v`, node)
 }
 
 func TestTokeniseGrammar(test *testing.T) {
@@ -58,8 +58,8 @@ func TestTokeniseGrammar(test *testing.T) {
 		for position, lexeme := range sequence {
 			token := data.tokens[position]
 
-			if lexeme.Token.GetIdentity() != token {
-				test.Errorf(`[%d] @%d Token %v was expected, instead got %v`, i, position, token, lexeme.Token.GetIdentity())
+			if lexeme.GetTokenIdentity() != token {
+				test.Errorf(`[%d] @%d Token %v was expected, instead got %v`, i, position, token, lexeme.GetTokenIdentity())
 				return
 			}
 		}

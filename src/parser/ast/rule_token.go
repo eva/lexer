@@ -13,7 +13,7 @@ type RuleToken struct {
 func (r RuleToken) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
 	lexeme := sequence[0]
 
-	if lexeme.IsToken(r.Target) == false {
+	if lexeme.IsTokenIdentity(r.Target) == false {
 		return r.Rule.Match(grammar, sequence)
 	}
 

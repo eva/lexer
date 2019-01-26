@@ -33,7 +33,8 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 			break
 		}
 
-		tokens := stack.Current().GetTokens()
+		namespace := stack.Current()
+		tokens := namespace.GetTokens()
 
 		fragment := input[index:]
 		matched, lexeme := TokeniseFirstLexeme(fragment, tokens)
@@ -42,7 +43,13 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 			return sequence, index, ErrTokeniserCannotMatchToken
 		}
 
-		transition, newnamespaceid := lexeme.Token.Transition()
+		found, token := namespace.GetToken(lexeme.GetTokenIdentity())
+
+		if found == false {
+			panic(`Please make me error`)
+		}
+
+		transition, newnamespaceid := token.Transition()
 
 		if transition == true {
 			if newnamespaceid == ast.NamespaceIdentityShift {
@@ -58,7 +65,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 			}
 		}
 
-		offset := lexeme.Offset
+		offset := lexeme.GetTokenOffset()
 		index = index + (offset[0] + offset[1])
 
 		sequence = append(sequence, lexeme)
@@ -71,7 +78,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 	return sequence, index, nil
 }
 
-func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, ast.Lexeme) {
+func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, ast.LexemeKind) {
 	for _, token := range tokens {
 		matched, offset := token.Match(input)
 
@@ -85,7 +92,7 @@ func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, ast.Lexeme) {
 
 		value := input[0:offset[1]]
 		lexeme := ast.Lexeme{
-			Token:  token,
+			Token:  token.GetIdentity(),
 			Offset: offset,
 			Value:  value,
 		}
@@ -93,5 +100,5 @@ func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, ast.Lexeme) {
 		return true, lexeme
 	}
 
-	return false, ast.Lexeme{}
+	return false, nil
 }
