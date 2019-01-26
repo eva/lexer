@@ -7,10 +7,10 @@ import "errors"
 var ErrGrammarMissingRootNamespace = errors.New("Could not resolve the root namespace for grammar")
 
 type GrammarKind interface {
-	RootNamespace() (namespace NamespaceKind, err error)
-	Namespace(id NamespaceIdentity) (found bool, namespace NamespaceKind)
-	Token(id TokenIdentity) (found bool, token TokenKind)
-	Rule(id RuleIdentity) (found bool, rule RuleKind)
+	GetRootNamespace() (namespace NamespaceKind, err error)
+	FindNamespace(id NamespaceIdentity) (found bool, namespace NamespaceKind)
+	FindToken(id TokenIdentity) (found bool, token TokenKind)
+	FindRule(id RuleIdentity) (found bool, rule RuleKind)
 	GetRules() RuleSet
 }
 
@@ -20,7 +20,7 @@ type Grammar struct {
 	Rules      RuleSet
 }
 
-func (g Grammar) RootNamespace() (NamespaceKind, error) {
+func (g Grammar) GetRootNamespace() (NamespaceKind, error) {
 	for _, namespace := range g.Namespaces {
 		return namespace, nil
 	}
@@ -28,7 +28,7 @@ func (g Grammar) RootNamespace() (NamespaceKind, error) {
 	return nil, ErrGrammarMissingRootNamespace
 }
 
-func (g Grammar) Namespace(id NamespaceIdentity) (bool, NamespaceKind) {
+func (g Grammar) FindNamespace(id NamespaceIdentity) (bool, NamespaceKind) {
 	for _, namespace := range g.Namespaces {
 		if namespace.GetIdentity() == id {
 			return true, namespace
@@ -38,11 +38,11 @@ func (g Grammar) Namespace(id NamespaceIdentity) (bool, NamespaceKind) {
 	return false, nil
 }
 
-func (g Grammar) Token(id TokenIdentity) (bool, TokenKind) {
+func (g Grammar) FindToken(id TokenIdentity) (bool, TokenKind) {
 	return false, nil
 }
 
-func (g Grammar) Rule(id RuleIdentity) (bool, RuleKind) {
+func (g Grammar) FindRule(id RuleIdentity) (bool, RuleKind) {
 	return false, nil
 }
 

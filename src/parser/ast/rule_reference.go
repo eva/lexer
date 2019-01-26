@@ -6,7 +6,7 @@ type RuleReference struct {
 }
 
 func (r RuleReference) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
-	found, rule := grammar.Rule(r.Target)
+	found, rule := grammar.FindRule(r.Target)
 
 	if found == false {
 		return r.Rule.Match(grammar, sequence)

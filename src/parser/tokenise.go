@@ -19,7 +19,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 	length := len(input)
 	index := 0
 
-	root, err := grammar.RootNamespace()
+	root, err := grammar.GetRootNamespace()
 
 	if err != nil {
 		return sequence, index, err
@@ -55,7 +55,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 			if newnamespaceid == ast.NamespaceIdentityShift {
 				stack.Shift()
 			} else {
-				found, newnamespace := grammar.Namespace(newnamespaceid)
+				found, newnamespace := grammar.FindNamespace(newnamespaceid)
 
 				if found == false {
 					return sequence, index, ErrTokeniserCannotMoveNamespace

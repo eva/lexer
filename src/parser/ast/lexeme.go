@@ -8,9 +8,9 @@ func (sequence LexemeSequence) Count() int {
 
 type LexemeKind interface {
 	GetTokenIdentity() TokenIdentity
+	IsTokenIdentity(id TokenIdentity) bool
 	GetTokenOffset() TokenOffset
 	GetValue() string
-	IsTokenIdentity(id TokenIdentity) bool
 }
 
 type Lexeme struct {
@@ -23,14 +23,14 @@ func (l Lexeme) GetTokenIdentity() TokenIdentity {
 	return l.Token
 }
 
+func (l Lexeme) IsTokenIdentity(id TokenIdentity) bool {
+	return l.Token == id
+}
+
 func (l Lexeme) GetTokenOffset() TokenOffset {
 	return l.Offset
 }
 
 func (l Lexeme) GetValue() string {
 	return l.Value
-}
-
-func (l Lexeme) IsTokenIdentity(id TokenIdentity) bool {
-	return l.Token == id
 }

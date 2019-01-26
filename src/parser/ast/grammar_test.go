@@ -2,10 +2,10 @@ package ast
 
 import "testing"
 
-func TestGrammarNamespace_WithNoNamespaces_MissingNamespace(test *testing.T) {
+func TestGrammar_FindNamespace_WithNoNamespaces_MissingNamespace(test *testing.T) {
 	grammar := Grammar{}
 
-	found, namespace := grammar.Namespace("missing")
+	found, namespace := grammar.FindNamespace("missing")
 
 	if found != false {
 		test.Error(`Expected to have not found a namespace`)
@@ -18,7 +18,7 @@ func TestGrammarNamespace_WithNoNamespaces_MissingNamespace(test *testing.T) {
 	}
 }
 
-func TestGrammarNamespace_WithNamespaces_MissingNamespace(test *testing.T) {
+func TestGrammar_FindNamespace_WithNamespaces_MissingNamespace(test *testing.T) {
 	grammar := Grammar{
 		Namespaces: NamespaceSet{
 			Namespace{Identity: "foo"},
@@ -26,7 +26,7 @@ func TestGrammarNamespace_WithNamespaces_MissingNamespace(test *testing.T) {
 		},
 	}
 
-	found, namespace := grammar.Namespace("missing")
+	found, namespace := grammar.FindNamespace("missing")
 
 	if found != false {
 		test.Error(`Expected to have not found a namespace`)
@@ -39,7 +39,7 @@ func TestGrammarNamespace_WithNamespaces_MissingNamespace(test *testing.T) {
 	}
 }
 
-func TestGrammarNamespace_WithNamespaces_FindNamespace(test *testing.T) {
+func TestGrammar_FindNamespace_WithNamespaces_FindNamespace(test *testing.T) {
 	grammar := Grammar{
 		Namespaces: NamespaceSet{
 			Namespace{Identity: "foo"},
@@ -47,7 +47,7 @@ func TestGrammarNamespace_WithNamespaces_FindNamespace(test *testing.T) {
 		},
 	}
 
-	found, namespace := grammar.Namespace("bar")
+	found, namespace := grammar.FindNamespace("bar")
 
 	if found != true {
 		test.Error(`Expected to find namespace`)
