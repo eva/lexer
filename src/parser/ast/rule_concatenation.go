@@ -18,6 +18,10 @@ func (r RuleConcatenation) Match(grammar GrammarKind, sequence LexemeSequence) (
 			return r.Rule.Match(grammar, sequence)
 		}
 
+		if child.IsEmpty() {
+			continue
+		}
+
 		nodes = append(nodes, child)
 	}
 

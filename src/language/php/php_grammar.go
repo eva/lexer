@@ -108,7 +108,12 @@ var Grammar = ast.Grammar{
 				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}, // Whitespace?
 				ast.RuleReference{Target: RuleOperator},                          // Operator
 				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}, // Whitespace?
-				ast.RuleReference{Target: RuleExpressionSide},                    // Right
+				ast.RuleChoice{ // Right
+					Rules: ast.RuleSet{
+						ast.RuleReference{Target: RuleExpression},
+						ast.RuleReference{Target: RuleExpressionSide},
+					},
+				},
 			},
 		},
 		// Expresion Side

@@ -18,9 +18,13 @@ func ParseAnySequence(grammar ast.GrammarKind, sequence ast.LexemeSequence) (ast
 			continue
 		}
 
-		matched, _, node, _ := rule.Match(grammar, sequence)
+		matched, sequence, node, _ := rule.Match(grammar, sequence)
 
 		if matched == true {
+			if sequence.IsEmpty() == false {
+				continue
+			}
+
 			return node, nil
 		}
 	}

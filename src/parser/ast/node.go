@@ -16,6 +16,7 @@ type NodeKind interface {
 	CountLexemeSequence() int
 	GetNodeSequence() NodeSequence
 	CountNodeSequence() int
+	IsEmpty() bool
 }
 
 type Node struct {
@@ -42,4 +43,16 @@ func (n Node) GetNodeSequence() NodeSequence {
 
 func (n Node) CountNodeSequence() int {
 	return n.Nodes.Count()
+}
+
+func (n Node) IsEmpty() bool {
+	if n.CountLexemeSequence() > 0 {
+		return false
+	}
+
+	if n.CountNodeSequence() > 0 {
+		return false
+	}
+
+	return true
 }
