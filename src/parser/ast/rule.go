@@ -1,38 +1,46 @@
 package ast
 
-import "errors"
+// RuleIdentity represents a unique identity given to all rules.
+type RuleIdentity uint
 
-// A RuleIdentity represents a rule identity in lexical parsing.
-// These rule identities must be unique to each grammar.
-type RuleIdentity int
+// RuleIdentityNone is the zero token identity.
+// The lower bound for a valid rule identity is 1, meaning zero (0) is invalid.
+// When a rule identity is not specifically given an identity we can match against this variable.
+var RuleIdentityNone RuleIdentity
 
-var RuleIdentityNone RuleIdentity = 0
-
+// RuleSet is simply a collection of rule kind.
+// This is defined simply as a shortcut and syntactical sugar when defining grammars.
 type RuleSet []RuleKind
 
 // RuleKind is an interface that vaguely wraps the core functionality for lexical rules.
-// A rule should contain an identity and be able to see if it matches a lexeme sequence.
+// The core functionality for a rule is the ability to know its identity and to match against a lexeme sequence.
 type RuleKind interface {
+	HasIdentity() bool
 	GetIdentity() RuleIdentity
 	ShouldIgnore() bool
 	Match(grammar GrammarKind, sequence LexemeSequence) (matched bool, remaining LexemeSequence, node NodeKind, err error)
 }
 
-var ErrRuleNotMatched = errors.New("The rule did not match")
-
+// Rule is a basic core implementation for `RuleKind` minus the match method.
 type Rule struct {
 	Identity RuleIdentity
 	Ignore   bool
 }
 
-func (r Rule) GetIdentity() RuleIdentity {
-	return r.Identity
+// HasIdentity will validate that the rule has been initialised with a valid identity.
+// An identity is valid if its greater than the uninitialised value.
+func (rule Rule) HasIdentity() bool {
+	return rule.GetIdentity() != RuleIdentityNone
 }
 
-func (r Rule) ShouldIgnore() bool {
-	return r.Ignore
+// GetIdentity returns the rule identity the rule was initialised with.
+// In cases where one wasn't provided at initialisation then `RuleIdentityNone` is returned.
+// Make sure to check against `HasIdentity()` first.
+func (rule Rule) GetIdentity() RuleIdentity {
+	return rule.Identity
 }
 
-func (r Rule) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
-	return false, sequence, nil, ErrRuleNotMatched
+// ShouldIgnore returns if the rule should be ignored from root level parsing.
+func (rule Rule) ShouldIgnore() bool {
+	return rule.Ignore
 }

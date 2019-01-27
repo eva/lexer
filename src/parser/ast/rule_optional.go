@@ -6,9 +6,24 @@ type RuleOptional struct {
 }
 
 func (r RuleOptional) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
+	if sequence.IsEmpty() {
+		err := &ErrRuleSequenceEmpty{
+			RuleIdentity: r.GetIdentity(),
+		}
+
+		return false, sequence, nil, err
+	}
+
 	var nodes NodeSequence
 
-	matched, remaining, child, _ := r.Target.Match(grammar, sequence)
+	matched, remaining, child, err := r.Target.Match(grammar, sequence)
+
+	if err != nil {
+		switch err.(type) {
+		case *ErrRuleReferenceNotFound:
+			return false, remaining, nil, err
+		}
+	}
 
 	if matched == true {
 		nodes = append(nodes, child)

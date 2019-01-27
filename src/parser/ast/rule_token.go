@@ -7,13 +7,15 @@ type RuleToken struct {
 
 func (r RuleToken) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
 	if sequence.IsEmpty() {
-		return r.Rule.Match(grammar, sequence)
+		err := NewErrRuleSequenceEmpty(r)
+		return false, sequence, nil, err
 	}
 
 	lexeme := sequence[0]
 
 	if lexeme.IsTokenIdentity(r.Target) == false {
-		return r.Rule.Match(grammar, sequence)
+		err := NewErrRuleTokenMatchFailure(r, r.Target, lexeme)
+		return false, sequence, nil, err
 	}
 
 	node := Node{

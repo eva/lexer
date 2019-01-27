@@ -11,11 +11,11 @@ func (r RuleConcatenation) Match(grammar GrammarKind, sequence LexemeSequence) (
 	remaining := sequence
 
 	for _, rule := range r.Rules {
-		matched, newremaining, child, _ := rule.Match(grammar, remaining)
+		matched, newremaining, child, err := rule.Match(grammar, remaining)
 		remaining = newremaining
 
 		if matched == false {
-			return r.Rule.Match(grammar, sequence)
+			return false, remaining, nil, err
 		}
 
 		if child.IsEmpty() {

@@ -1,6 +1,8 @@
 package ast
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestRuleToken_Match_BasicFailure(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
@@ -22,18 +24,18 @@ func TestRuleToken_Match_BasicFailure(test *testing.T) {
 		return
 	}
 
-	if err != ErrRuleNotMatched {
-		test.Errorf(`Expected "ErrRuleNotMatched" to be returned instead got: %+v`, err)
+	if err, istype := err.(*ErrRuleTokenMatchFailure); istype == false {
+		test.Errorf(`Unexpected error: %#v`, err)
 		return
 	}
 
 	if node != nil {
-		test.Errorf(`Expected failed match to return a nil node, got: %+v`, node)
+		test.Errorf(`Expected failed match to return a nil node, got: %#v`, node)
 		return
 	}
 
 	if len(remaining) != 1 {
-		test.Errorf(`Expected remaining lexeme sequence to be the same as given, instead got: %+v`, remaining)
+		test.Errorf(`Expected remaining lexeme sequence to be the same as given, instead got: %#v`, remaining)
 		return
 	}
 }
