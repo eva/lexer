@@ -19,10 +19,10 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 	length := len(input)
 	index := 0
 
-	root, err := grammar.GetRootNamespace()
+	found, root := grammar.FindRootNamespace()
 
-	if err != nil {
-		return sequence, index, err
+	if found == false {
+		return sequence, index, errors.New("Missing root namespace")
 	}
 
 	stack := NamespaceStack{}

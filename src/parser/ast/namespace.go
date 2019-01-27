@@ -3,6 +3,7 @@ package ast
 type NamespaceIdentity string
 
 var NamespaceIdentityNone NamespaceIdentity = ""
+var NamespaceIdentityRoot NamespaceIdentity = "root"
 var NamespaceIdentityShift NamespaceIdentity = "<<"
 
 type NamespaceSet []NamespaceKind
