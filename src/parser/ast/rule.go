@@ -1,7 +1,7 @@
 package ast
 
 // RuleIdentity represents a unique identity given to all rules.
-type RuleIdentity uint
+type RuleIdentity int
 
 // RuleIdentityNone is the zero token identity.
 // The lower bound for a valid rule identity is 1, meaning zero (0) is invalid.

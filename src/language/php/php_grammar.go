@@ -39,7 +39,7 @@ const (
 
 // PHP lexical namespaces.
 const (
-	NamespaceRoot     ast.NamespaceIdentity = "root"
+	NamespaceRoot     ast.NamespaceIdentity = ast.NamespaceIdentityRoot
 	NamespaceVariable ast.NamespaceIdentity = "variable"
 )
 

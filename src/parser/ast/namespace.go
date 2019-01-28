@@ -2,9 +2,9 @@ package ast
 
 type NamespaceIdentity string
 
-var NamespaceIdentityNone NamespaceIdentity = ""
-var NamespaceIdentityRoot NamespaceIdentity = "root"
-var NamespaceIdentityShift NamespaceIdentity = "<<"
+const NamespaceIdentityNone NamespaceIdentity = ""
+const NamespaceIdentityRoot NamespaceIdentity = "root"
+const NamespaceIdentityShift NamespaceIdentity = "<<"
 
 type NamespaceSet []NamespaceKind
 type NamespaceStack NamespaceSet

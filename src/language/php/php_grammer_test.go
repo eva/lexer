@@ -41,7 +41,7 @@ func TestParseGrammar_BasicExpression(test *testing.T) {
 }
 
 func TestParseGrammar_BasicExpressionSelfReference(test *testing.T) {
-	node, err := parser.ParseAny(Grammar, `1+1+1`)
+	node, err := parser.ParseAny(Grammar, `1+1*1`)
 
 	if err != nil {
 		test.Errorf(`Was not expecting to get error: %v`, err)
