@@ -1,5 +1,6 @@
 package ast
 
+// LexemeSequence is collection of lexeme kind.
 type LexemeSequence []LexemeKind
 
 func (sequence LexemeSequence) Count() int {
@@ -7,7 +8,7 @@ func (sequence LexemeSequence) Count() int {
 }
 
 func (sequence LexemeSequence) IsEmpty() bool {
-	return sequence.Count() == 0
+	return len(sequence) == 0
 }
 
 type LexemeKind interface {
