@@ -14,6 +14,7 @@ const (
 	TokenWhitespace
 	TokenIdentifier
 
+	TokenLiteralString
 	TokenLiteralFloat
 	TokenLiteralInteger
 	TokenLiteralBooleanTrue
@@ -41,6 +42,7 @@ const (
 const (
 	NamespaceRoot     ast.NamespaceIdentity = ast.NamespaceIdentityRoot
 	NamespaceVariable ast.NamespaceIdentity = "variable"
+	NamespaceString   ast.NamespaceIdentity = "string"
 )
 
 // PHP lexical rules.
@@ -96,6 +98,13 @@ var Grammar = ast.Grammar{
 			Identity: NamespaceVariable,
 			Tokens: ast.TokenSet{
 				ast.TokenRegex{Token: ast.Token{Identity: TokenIdentifier, TransitionTo: ast.NamespaceIdentityShift}, Expression: regexp.MustCompile(`[a-zA-Z\_]{1}[a-zA-Z0-9\_]*`)},
+			},
+		},
+		ast.Namespace{
+			Identity: NamespaceString,
+			Tokens: ast.TokenSet{
+				ast.TokenRegex{Token: ast.Token{Identity: TokenLiteralString}, Expression: regexp.MustCompile(`(\\\"|[^"])+`)},
+				ast.TokenLiteral{Token: ast.Token{Identity: TokenSyntaxQuoteDouble, TransitionTo: ast.NamespaceIdentityShift}, Literal: `"`},
 			},
 		},
 	},
