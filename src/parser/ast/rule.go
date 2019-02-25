@@ -6,7 +6,7 @@ type RuleIdentity int
 // RuleIdentityNone is the zero token identity.
 // The lower bound for a valid rule identity is 1, meaning zero (0) is invalid.
 // When a rule identity is not specifically given an identity we can match against this variable.
-var RuleIdentityNone RuleIdentity
+const RuleIdentityNone RuleIdentity = 0
 
 // RuleSet is simply a collection of rule kind.
 // This is defined simply as a shortcut and syntactical sugar when defining grammars.
