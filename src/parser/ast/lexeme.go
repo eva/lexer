@@ -11,11 +11,22 @@ func (sequence LexemeSequence) IsEmpty() bool {
 	return len(sequence) == 0
 }
 
+func (sequence LexemeSequence) IsValid() bool {
+	for _, lexeme := range sequence {
+		if lexeme.IsValid() == false {
+			return false
+		}
+	}
+
+	return true
+}
+
 type LexemeKind interface {
 	GetTokenIdentity() TokenIdentity
 	IsTokenIdentity(id TokenIdentity) bool
 	GetTokenOffset() TokenOffset
 	GetValue() string
+	IsValid() bool
 }
 
 type Lexeme struct {
@@ -38,4 +49,20 @@ func (l Lexeme) GetTokenOffset() TokenOffset {
 
 func (l Lexeme) GetValue() string {
 	return l.Value
+}
+
+func (lexeme Lexeme) IsValid() bool {
+	if lexeme.Token == InvalidTokenIdentity {
+		return false
+	}
+
+	if lexeme.Offset.IsValid() == false {
+		return false
+	}
+
+	if len(lexeme.Value) == 0 {
+		return false
+	}
+
+	return true
 }
