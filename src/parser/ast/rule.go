@@ -12,6 +12,14 @@ const RuleIdentityNone RuleIdentity = 0
 // This is defined simply as a shortcut and syntactical sugar when defining grammars.
 type RuleSet []RuleKind
 
+func (ruleset RuleSet) Count() int {
+	return len(ruleset)
+}
+
+func (ruleset RuleSet) IsEmpty() bool {
+	return ruleset.Count() == 0
+}
+
 // RuleKind is an interface that vaguely wraps the core functionality for lexical rules.
 // The core functionality for a rule is the ability to know its identity and to match against a lexeme sequence.
 type RuleKind interface {

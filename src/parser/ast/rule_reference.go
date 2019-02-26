@@ -8,7 +8,7 @@ type RuleReference struct {
 }
 
 // Match will attempt to find the target rule against the grammar and match against that instead.
-// The returned node kind is directly passed from the proxied rule, therefore this rule is not repsented as a node.
+// The returned node kind is directly passed from the proxied rule, therefore this rule is not represented as a node.
 func (rule RuleReference) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
 	found, proxy := grammar.FindRule(rule.Target)
 

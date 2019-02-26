@@ -1,12 +1,21 @@
 package ast
 
+// RuleChoice represents a choice of many rules in order of definition.
+// The node kind returned is dependant of the rule that matched first.
 type RuleChoice struct {
 	Rule
-	Rules []RuleKind
+	Rules RuleSet
 }
 
-func (r RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
-	for _, rule := range r.Rules {
+// Match will attempt a match on all rules in its ruleset and returns the first one that matches.
+// The returned node kind is directly passed from the proxied rule, therefore this rule is not represented as a node.
+func (rule RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
+	if rule.Rules.IsEmpty() {
+		err := NewErrRuleChoiceEmptyRuleSet(rule)
+		return false, sequence, nil, err
+	}
+
+	for _, rule := range rule.Rules {
 		matched, remaining, child, err := rule.Match(grammar, sequence)
 
 		if err != nil {
@@ -21,13 +30,13 @@ func (r RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool, L
 		}
 
 		node := NodeRule{
-			Rule:  r.GetIdentity(),
+			Rule:  rule.GetIdentity(),
 			Nodes: NodeSequence{child},
 		}
 
 		return true, remaining, node, nil
 	}
 
-	err := NewErrRuleChoiceNoneMatched(r)
+	err := NewErrRuleChoiceNoneMatched(rule)
 	return false, sequence, nil, err
 }

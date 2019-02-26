@@ -2,6 +2,33 @@ package ast
 
 import "testing"
 
+func TestRuleChoice_EmptyRuleSet(test *testing.T) {
+	grammar := Grammar{}
+	sequence := LexemeSequence{}
+
+	rule := RuleChoice{}
+	matched, _, node, err := rule.Match(grammar, sequence)
+
+	if matched == true {
+		test.Error(`Expected empty ruleset to result in no match`)
+	}
+
+	if node != nil {
+		test.Error(`Expected empty sequence and empty ruleset to not result in a returned node`)
+	}
+
+	if err == nil {
+		test.Error(`Expected empty ruleset to result in an err`)
+	}
+
+	// Remember that errors are always pointers
+	_, casted := err.(*ErrRuleChoiceEmptyRuleSet)
+
+	if casted == false {
+		test.Errorf(`Expected error to be an instance of ErrRuleChoiceEmptyRuleSet, instead got: %#v`, err)
+	}
+}
+
 func TestRuleChoice(test *testing.T) {
 	var fooTokenIdentity TokenIdentity = 1
 	var barTokenIdentity TokenIdentity = 2
