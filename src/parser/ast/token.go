@@ -4,6 +4,9 @@ package ast
 // Typically this will be used as a response from token matching as the value may not be important.
 type TokenOffset [2]int
 
+// IsValid will return true assuming the data the offset was constructed with is considered valud.
+// That is the first integer representing the offset must be at least 0.
+// The second number representing the length of the value captured should be greater or equal to 1.
 func (offset TokenOffset) IsValid() bool {
 	if offset[0] < 0 {
 		return false
