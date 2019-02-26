@@ -14,9 +14,7 @@ func (r RuleOptional) Match(grammar GrammarKind, sequence LexemeSequence) (bool,
 		return false, sequence, nil, err
 	}
 
-	var nodes NodeSequence
-
-	matched, remaining, child, err := r.Target.Match(grammar, sequence)
+	matched, remaining, node, err := r.Target.Match(grammar, sequence)
 
 	if err != nil {
 		switch err.(type) {
@@ -25,14 +23,5 @@ func (r RuleOptional) Match(grammar GrammarKind, sequence LexemeSequence) (bool,
 		}
 	}
 
-	if matched == true {
-		nodes = append(nodes, child)
-	}
-
-	node := Node{
-		Rule:  r.GetIdentity(),
-		Nodes: nodes,
-	}
-
-	return true, remaining, node, nil
+	return matched, remaining, node, nil
 }

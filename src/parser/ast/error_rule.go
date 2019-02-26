@@ -22,6 +22,7 @@ func (e ErrRuleSequenceEmpty) Error() string {
 
 type ErrRuleTokenMatchFailure struct {
 	RuleType             string
+	RuleIdentity         RuleIdentity
 	TargetTokenIdentity  TokenIdentity
 	CurrentTokenIdentity TokenIdentity
 	CurrentTokenOffset   TokenOffset
@@ -30,6 +31,7 @@ type ErrRuleTokenMatchFailure struct {
 func NewErrRuleTokenMatchFailure(rule RuleKind, target TokenIdentity, lexeme LexemeKind) error {
 	return &ErrRuleTokenMatchFailure{
 		RuleType:             fmt.Sprintf(`%T`, rule),
+		RuleIdentity:         rule.GetIdentity(),
 		TargetTokenIdentity:  target,
 		CurrentTokenIdentity: lexeme.GetTokenIdentity(),
 		CurrentTokenOffset:   lexeme.GetTokenOffset(),
@@ -47,10 +49,10 @@ type ErrRuleReferenceNotFound struct {
 	RuleIdentity RuleIdentity
 }
 
-func NewErrRuleReferenceNotFound(rule RuleKind) error {
+func NewErrRuleReferenceNotFound(rule RuleKind, target RuleIdentity) error {
 	return &ErrRuleReferenceNotFound{
 		RuleType:     fmt.Sprintf(`%T`, rule),
-		RuleIdentity: rule.GetIdentity(),
+		RuleIdentity: target,
 	}
 }
 

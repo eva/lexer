@@ -16,8 +16,20 @@ func TestParseGrammar_BasicVariable(test *testing.T) {
 		return
 	}
 
-	if node.GetRuleIdentity() != RuleVariable {
-		test.Errorf(`Expected to match the variable rule %d instead got %v`, RuleVariable, node.GetRuleIdentity())
+	if node.GetNodeType() != ast.NodeTypeRule {
+		test.Errorf(`Expected returned node to be of type ast.NodeTypeRule, instead got: %T`, node)
+		return
+	}
+
+	cast, casted := node.(ast.NodeRule)
+
+	if casted == false {
+		test.Error(`Expected returned node to be an instance of ast.NodeRule`)
+		return
+	}
+
+	if cast.GetRuleIdentity() != RuleVariable {
+		test.Errorf(`Expected returned rule to be %#v, instead got %#v`, RuleVariable, cast.GetRuleIdentity())
 		return
 	}
 
@@ -32,8 +44,20 @@ func TestParseGrammar_BasicExpression(test *testing.T) {
 		return
 	}
 
-	if node.GetRuleIdentity() != RuleExpression {
-		test.Errorf(`Expected to match the variable rule %d instead got %v`, RuleExpression, node.GetRuleIdentity())
+	if node.GetNodeType() != ast.NodeTypeRule {
+		test.Errorf(`Expected returned node to be of type ast.NodeTypeRule, instead got: %T`, node)
+		return
+	}
+
+	cast, casted := node.(ast.NodeRule)
+
+	if casted == false {
+		test.Error(`Expected returned node to be an instance of ast.NodeRule`)
+		return
+	}
+
+	if cast.GetRuleIdentity() != RuleExpression {
+		test.Errorf(`Expected returned rule to be %#v, instead got %#v`, RuleExpression, cast.GetRuleIdentity())
 		return
 	}
 
@@ -48,8 +72,20 @@ func TestParseGrammar_BasicExpressionSelfReference(test *testing.T) {
 		return
 	}
 
-	if node.GetRuleIdentity() != RuleExpression {
-		test.Errorf(`Expected to match the variable rule %d instead got %v`, RuleExpression, node.GetRuleIdentity())
+	if node.GetNodeType() != ast.NodeTypeRule {
+		test.Errorf(`Expected returned node to be of type ast.NodeTypeRule, instead got: %T`, node)
+		return
+	}
+
+	cast, casted := node.(ast.NodeRule)
+
+	if casted == false {
+		test.Error(`Expected returned node to be an instance of ast.NodeRule`)
+		return
+	}
+
+	if cast.GetRuleIdentity() != RuleExpression {
+		test.Errorf(`Expected returned rule to be %#v, instead got %#v`, RuleExpression, cast.GetRuleIdentity())
 		return
 	}
 

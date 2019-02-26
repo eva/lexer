@@ -19,24 +19,44 @@ func TestRuleChoice(test *testing.T) {
 		Lexeme{Token: barTokenIdentity},
 	}
 
-	matched, remaining, node, err := rule.Match(grammar, sequence)
+	matched, remaining, response, err := rule.Match(grammar, sequence)
+
+	if response.GetNodeType() != NodeTypeRule {
+		test.Errorf(`Expected returned node to have a type of ast.NodeTypeRule, instead got: %#v`, response.GetNodeType())
+	}
+
+	node, instanceof := response.(NodeRule)
+
+	if instanceof == false {
+		test.Errorf(`Expected node to be an instance of ast.NodeRule, instead got error: %#v`, node)
+		return
+	}
 
 	if matched != true {
-		test.Errorf(`Expected match, instead got error: %+v`, err)
+		test.Errorf(`Expected match, instead got error: %#v`, err)
 		return
 	}
 
-	if node.CountNodeSequence() != 1 {
-		test.Errorf(`Choice should have one child being the token rule, instead got: %+v`, node.GetNodeSequence())
+	if node.IsEmpty() == false {
+		test.Errorf(`Node should not be empty, instead got: %#v`, node.GetNodeSequence())
 		return
 	}
 
-	if node.CountLexemeSequence() != 0 {
-		test.Errorf(`Choice should not have any direct lexemes matched, instead got: %+v`, node.GetLexemeSequence())
+	childnode := node.GetNodeSequence()[0]
+
+	if childnode.GetNodeType() != NodeTypeLexeme {
+		test.Errorf(`Node first sequence node should have a type of ast.NodeTypeLexeme, instead got: %#v`, childnode.GetNodeType())
 		return
 	}
 
-	if node.GetNodeSequence()[0].GetLexemeSequence()[0].GetTokenIdentity() != barTokenIdentity {
+	child, childinstanceof := childnode.(NodeLexeme)
+
+	if childinstanceof == false {
+		test.Errorf(`Expected child node to be an instance of ast.NodeLexeme, instead got error: %#v`, node)
+		return
+	}
+
+	if child.GetTokenIdentity() != barTokenIdentity {
 		test.Errorf(`Token did not match expected token`)
 		return
 	}

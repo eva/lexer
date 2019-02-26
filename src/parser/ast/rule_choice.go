@@ -20,7 +20,7 @@ func (r RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool, L
 			continue
 		}
 
-		node := Node{
+		node := NodeRule{
 			Rule:  r.GetIdentity(),
 			Nodes: NodeSequence{child},
 		}
