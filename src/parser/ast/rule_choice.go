@@ -15,8 +15,8 @@ func (rule RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool
 		return false, sequence, nil, err
 	}
 
-	for _, rule := range rule.Rules {
-		matched, remaining, child, err := rule.Match(grammar, sequence)
+	for _, proxy := range rule.Rules {
+		matched, remaining, child, err := proxy.Match(grammar, sequence)
 
 		if err != nil {
 			switch err.(type) {
@@ -30,7 +30,7 @@ func (rule RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool
 		}
 
 		node := NodeRule{
-			Rule:  rule.GetIdentity(),
+			Rule:  proxy.GetIdentity(),
 			Nodes: NodeSequence{child},
 		}
 

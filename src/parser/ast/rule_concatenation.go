@@ -6,6 +6,11 @@ type RuleConcatenation struct {
 }
 
 func (r RuleConcatenation) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
+	if r.Rules.IsEmpty() {
+		err := NewErrRuleConcatenationEmptyRuleSet(r)
+		return false, sequence, nil, err
+	}
+
 	var nodes NodeSequence
 
 	remaining := sequence

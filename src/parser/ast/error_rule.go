@@ -62,6 +62,24 @@ func (e ErrRuleReferenceNotFound) Error() string {
 	return fmt.Sprintf(`[ErrRuleTokenMatchFailure] %s`, message)
 }
 
+type ErrRuleConcatenationEmptyRuleSet struct {
+	RuleType     string
+	RuleIdentity RuleIdentity
+}
+
+func NewErrRuleConcatenationEmptyRuleSet(rule RuleKind) error {
+	return &ErrRuleConcatenationEmptyRuleSet{
+		RuleType:     fmt.Sprintf(`%T`, rule),
+		RuleIdentity: rule.GetIdentity(),
+	}
+}
+
+func (e ErrRuleConcatenationEmptyRuleSet) Error() string {
+	message := `No choices are available, ruleset given is empty.`
+
+	return fmt.Sprintf(`[ErrRuleConcatenationEmptyRuleSet] %s`, message)
+}
+
 type ErrRuleChoiceEmptyRuleSet struct {
 	RuleType     string
 	RuleIdentity RuleIdentity

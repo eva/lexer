@@ -6,11 +6,6 @@ type RuleOptional struct {
 }
 
 func (rule RuleOptional) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
-	if sequence.IsEmpty() {
-		err := NewErrRuleSequenceEmpty(rule)
-		return false, sequence, nil, err
-	}
-
 	matched, remaining, node, err := rule.Target.Match(grammar, sequence)
 
 	if err != nil {
@@ -18,6 +13,10 @@ func (rule RuleOptional) Match(grammar GrammarKind, sequence LexemeSequence) (bo
 		case *ErrRuleReferenceNotFound:
 			return false, remaining, nil, err
 		}
+	}
+
+	if matched == false {
+		return true, remaining, NodeNull{}, nil
 	}
 
 	return matched, remaining, node, nil
