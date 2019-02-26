@@ -1,6 +1,6 @@
 package ast
 
-// NodeLexemeKind represents a node that is cross with a lexeme.
+// NodeLexemeKind represents a node that is crossed with a lexeme.
 // Simply this node is a matched token and should mirror the lexeme it was created from.
 type NodeLexemeKind interface {
 	GetTokenIdentity() TokenIdentity
