@@ -5,16 +5,13 @@ type RuleOptional struct {
 	Target RuleKind
 }
 
-func (r RuleOptional) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
+func (rule RuleOptional) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
 	if sequence.IsEmpty() {
-		err := &ErrRuleSequenceEmpty{
-			RuleIdentity: r.GetIdentity(),
-		}
-
+		err := NewErrRuleSequenceEmpty(rule)
 		return false, sequence, nil, err
 	}
 
-	matched, remaining, node, err := r.Target.Match(grammar, sequence)
+	matched, remaining, node, err := rule.Target.Match(grammar, sequence)
 
 	if err != nil {
 		switch err.(type) {
