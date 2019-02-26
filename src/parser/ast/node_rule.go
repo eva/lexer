@@ -12,7 +12,7 @@ type NodeRule struct {
 	Nodes NodeSequence
 }
 
-func (n NodeRule) GetNodeType() NodeType {
+func (NodeRule) GetNodeType() NodeType {
 	return NodeTypeRule
 }
 

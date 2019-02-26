@@ -15,7 +15,7 @@ type NodeKind interface {
 
 type NodeNull struct{}
 
-func (node NodeNull) GetNodeType() NodeType {
+func (NodeNull) GetNodeType() NodeType {
 	return NodeTypeNull
 }
 

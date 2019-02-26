@@ -4,6 +4,18 @@ package ast
 // Typically this will be used as a response from token matching as the value may not be important.
 type TokenOffset [2]int
 
+func (offset TokenOffset) IsValid() bool {
+	if offset[0] < 0 {
+		return false
+	}
+
+	if offset[1] <= 0 {
+		return false
+	}
+
+	return true
+}
+
 // NoTokenOffset represents a token that was not found and will be acompanied with a false match.
 // All valid tokens should be of length 1, therefore {0,0} can be considered a "match miss".
 var NoTokenOffset = TokenOffset{0, 0}
