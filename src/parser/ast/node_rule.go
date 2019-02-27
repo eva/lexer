@@ -25,7 +25,15 @@ func (NodeRule) GetNodeType() NodeType {
 // IsValid will check the values of the node and return a boolean indicating its validity.
 // A node that is initialised with default values should always be considered invalid.
 func (node NodeRule) IsValid() bool {
-	return node.IsEmpty() == false
+	if node.Rule == RuleIdentityNone {
+		return false
+	}
+
+	if node.IsEmpty() {
+		return false
+	}
+
+	return true
 }
 
 func (node NodeRule) GetRuleIdentity() RuleIdentity {
@@ -37,7 +45,7 @@ func (node NodeRule) GetNodeSequence() NodeSequence {
 }
 
 func (node NodeRule) IsEmpty() bool {
-	return node.Nodes.Count() > 0
+	return node.Nodes.Count() == 0
 }
 
 func (node NodeRule) Count() int {
