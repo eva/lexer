@@ -30,7 +30,7 @@ func (rule RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool
 		}
 
 		node := NodeRule{
-			Rule:  proxy.GetIdentity(),
+			Rule:  rule.GetIdentity(),
 			Nodes: NodeSequence{child},
 		}
 
