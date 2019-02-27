@@ -2,6 +2,15 @@ package ast
 
 import "testing"
 
+func TestGrammar_GetRules_ReturnEmptyRuleset(test *testing.T) {
+	grammar := Grammar{}
+	rules := grammar.GetRules()
+
+	if rules.IsEmpty() != true {
+		test.Error(`Expected grammar initialised with defaults returns empty ruleset`)
+	}
+}
+
 func TestGrammar_FindRootNamespace_WithNoNamespace(test *testing.T) {
 	grammar := Grammar{}
 	found, namespace := grammar.FindRootNamespace()
