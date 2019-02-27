@@ -9,6 +9,7 @@ import (
 
 	examples "./examples/json"
 	"./parser"
+	"./parser/ast/printer"
 
 	"github.com/fatih/color"
 )
@@ -38,10 +39,9 @@ func main() {
 
 	node, err := parser.ParseAnySequence(examples.Grammar, sequence)
 
-	value, _ = json.MarshalIndent(node, "", " ")
 	fmt.Println(color.YellowString("Node:"))
-	fmt.Println(string(value))
-	fmt.Println("")
+	printer := printer.NodePrinter{}
+	printer.Print(examples.Grammar, node)
 
 	if err != nil {
 		fmt.Println(color.RedString("Error:"))
