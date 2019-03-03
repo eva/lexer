@@ -28,7 +28,7 @@ func TestGrammar_FindRootNamespace_WithNoNamespace(test *testing.T) {
 
 func TestGrammar_FindRootNamespace_WithNoRootNamespace(test *testing.T) {
 	grammar := Grammar{
-		Namespaces: NamespaceSet{
+		Namespaces: NamespaceCollection{
 			Namespace{},
 			Namespace{},
 			Namespace{},
@@ -50,7 +50,7 @@ func TestGrammar_FindRootNamespace_WithNoRootNamespace(test *testing.T) {
 
 func TestGrammar_FindRootNamespace_CanFindRootNamespace(test *testing.T) {
 	grammar := Grammar{
-		Namespaces: NamespaceSet{
+		Namespaces: NamespaceCollection{
 			Namespace{},
 			Namespace{},
 			Namespace{Identity: NamespaceIdentityRoot},
@@ -87,7 +87,7 @@ func TestGrammar_FindNamespace_WithNoNamespace(test *testing.T) {
 
 func TestGrammar_FindNamespace_WithNamespaceWrongIdentity(test *testing.T) {
 	grammar := Grammar{
-		Namespaces: NamespaceSet{
+		Namespaces: NamespaceCollection{
 			Namespace{Identity: "foo"},
 			Namespace{Identity: "bar"},
 		},
@@ -108,7 +108,7 @@ func TestGrammar_FindNamespace_WithNamespaceWrongIdentity(test *testing.T) {
 
 func TestGrammar_FindNamespace_CanMatchNamespace(test *testing.T) {
 	grammar := Grammar{
-		Namespaces: NamespaceSet{
+		Namespaces: NamespaceCollection{
 			Namespace{Identity: "foo"},
 			Namespace{Identity: "bar"},
 		},

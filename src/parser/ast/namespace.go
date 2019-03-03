@@ -6,8 +6,8 @@ const NamespaceIdentityNone NamespaceIdentity = ""
 const NamespaceIdentityRoot NamespaceIdentity = "root"
 const NamespaceIdentityShift NamespaceIdentity = "<<"
 
-type NamespaceSet []NamespaceKind
-type NamespaceStack NamespaceSet
+type NamespaceCollection []NamespaceKind
+type NamespaceStack NamespaceCollection
 
 type NamespaceKind interface {
 	GetIdentity() NamespaceIdentity

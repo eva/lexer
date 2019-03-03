@@ -9,7 +9,7 @@ import (
 
 func TestTokenise(test *testing.T) {
 	grammar := ast.Grammar{
-		Namespaces: ast.NamespaceSet{
+		Namespaces: ast.NamespaceCollection{
 			ast.Namespace{
 				Identity: "root",
 				Tokens: ast.TokenCollection{
@@ -73,7 +73,7 @@ func TestTokenise(test *testing.T) {
 
 func TestTokeniseTraverseNamespace_StringQuoteExample(test *testing.T) {
 	grammar := ast.Grammar{
-		Namespaces: ast.NamespaceSet{
+		Namespaces: ast.NamespaceCollection{
 			ast.Namespace{
 				Identity: "root",
 				Tokens: ast.TokenCollection{

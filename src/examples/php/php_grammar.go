@@ -66,7 +66,7 @@ const (
 
 // Grammar represents the PHP grammar.
 var Grammar = ast.Grammar{
-	Namespaces: ast.NamespaceSet{
+	Namespaces: ast.NamespaceCollection{
 		ast.Namespace{
 			Identity: NamespaceRoot,
 			Tokens: ast.TokenCollection{
