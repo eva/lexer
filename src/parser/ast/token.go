@@ -27,11 +27,13 @@ var NoTokenOffset = TokenOffset{0, 0}
 // The token identities must be unique per grammar.
 type TokenIdentity int
 
-// InvalidTokenIdentity represents an invalid token.
+// TokenIdentityNone represents an invalid token.
 // Zero is reserved for cases where an invalid token identity is needed.
-const InvalidTokenIdentity TokenIdentity = 0
+const TokenIdentityNone TokenIdentity = 0
 
-type TokenIdentitySet []TokenIdentity
+type TokenName string
+
+const TokenNameNone = ""
 
 // A TokenCollection represents a series of TokenKind in a collection.
 type TokenCollection []TokenKind
@@ -39,6 +41,7 @@ type TokenCollection []TokenKind
 // A TokenKind is a kind of lexical token.
 type TokenKind interface {
 	GetIdentity() TokenIdentity
+	GetName() TokenName
 	HasTransition() (should bool, namespace NamespaceIdentity)
 	Match(input string) (matched bool, offset TokenOffset)
 }
@@ -48,11 +51,16 @@ type TokenKind interface {
 // should be implemented against with that tokens functionality.
 type Token struct {
 	Identity     TokenIdentity
+	Name         TokenName
 	TransitionTo NamespaceIdentity
 }
 
-func (t Token) GetIdentity() TokenIdentity {
-	return t.Identity
+func (token Token) GetIdentity() TokenIdentity {
+	return token.Identity
+}
+
+func (token Token) GetName() TokenName {
+	return token.Name
 }
 
 // HasTransition implements TokenKind.HasTransition()
@@ -60,18 +68,18 @@ func (t Token) GetIdentity() TokenIdentity {
 // In this case the namespace will be NamespaceIdentity that can be looked up against the grammar.
 // The other case is when a transition should not be made, indicating the next token should be
 // taken from the current active namespace.
-func (t Token) HasTransition() (should bool, namespace NamespaceIdentity) {
-	if t.TransitionTo == NamespaceIdentityNone {
+func (token Token) HasTransition() (should bool, namespace NamespaceIdentity) {
+	if token.TransitionTo == NamespaceIdentityNone {
 		return false, NamespaceIdentityNone
 	}
 
-	return true, t.TransitionTo
+	return true, token.TransitionTo
 }
 
 // Match implements TokenKind.Match()
 // This method is hardcoded to always fail and return a NoTokenOffset as this method should be
 // override by the struct that uses this in composition. Rembmer the Token struct is not a
 // legal type of TokenKind.
-func (t Token) Match(input string) (matched bool, offset TokenOffset) {
+func (Token) Match(input string) (matched bool, offset TokenOffset) {
 	return false, NoTokenOffset
 }

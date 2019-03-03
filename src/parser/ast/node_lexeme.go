@@ -3,6 +3,7 @@ package ast
 // NodeLexemeKind represents a node that is crossed with a lexeme.
 // Simply this node is a matched token and should mirror the lexeme it was created from.
 type NodeLexemeKind interface {
+	GetNamespaceIdentity() NamespaceIdentity
 	GetTokenIdentity() TokenIdentity
 	IsTokenIdentity(id TokenIdentity) bool
 	GetTokenOffset() TokenOffset
@@ -11,18 +12,20 @@ type NodeLexemeKind interface {
 
 func NewLexemeNode(lexeme LexemeKind) NodeKind {
 	return NodeLexeme{
-		Token:  lexeme.GetTokenIdentity(),
-		Offset: lexeme.GetTokenOffset(),
-		Value:  lexeme.GetValue(),
+		Namespace: lexeme.GetNamespaceIdentity(),
+		Token:     lexeme.GetTokenIdentity(),
+		Offset:    lexeme.GetTokenOffset(),
+		Value:     lexeme.GetValue(),
 	}
 }
 
 // NodeLexeme is an instance of NodeLexemeKind implementing the same interface as LexemeKind almost.
 // All data available in the Lexeme should be available here as this is a matched token.
 type NodeLexeme struct {
-	Token  TokenIdentity
-	Offset TokenOffset
-	Value  string
+	Namespace NamespaceIdentity
+	Token     TokenIdentity
+	Offset    TokenOffset
+	Value     string
 }
 
 // GetNodeType will simply return the NodeTypeLexeme node type.
@@ -33,7 +36,7 @@ func (NodeLexeme) GetNodeType() NodeType {
 // IsValid will check the values of the node and return a boolean indicating its validity.
 // A node that is initialised with default values should always be considered invalid.
 func (node NodeLexeme) IsValid() bool {
-	if node.Token == InvalidTokenIdentity {
+	if node.Token == TokenIdentityNone {
 		return false
 	}
 
@@ -46,6 +49,10 @@ func (node NodeLexeme) IsValid() bool {
 	}
 
 	return true
+}
+
+func (node NodeLexeme) GetNamespaceIdentity() NamespaceIdentity {
+	return node.Namespace
 }
 
 // GetTokenIdentity will return the token identity matched.

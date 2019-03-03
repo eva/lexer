@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	".."
+	ast ".."
 )
 
 type NodePrinter struct {
@@ -42,7 +42,15 @@ func (printer NodePrinter) getIndent() string {
 }
 
 func (printer NodePrinter) printNodeLexeme(grammar ast.Grammar, node ast.NodeLexeme) {
-	fmt.Println(fmt.Sprintf(`%s%T: [Token: %d] %s`, printer.getIndent(), node, node.GetTokenIdentity(), node.GetValue()))
+	indent := printer.getIndent()
+
+	nsid := node.GetNamespaceIdentity()
+
+	tid := node.GetTokenIdentity()
+
+	value := node.GetValue()
+
+	fmt.Println(fmt.Sprintf(`%s%T: @%s [Token: %d] %s`, indent, node, nsid, tid, value))
 }
 
 func (printer NodePrinter) printNodeRule(grammar ast.Grammar, node ast.NodeRule) {
