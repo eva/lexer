@@ -60,6 +60,10 @@ func (node NodeLexeme) GetTokenIdentity() TokenIdentity {
 	return node.Token
 }
 
+func (lexeme NodeLexeme) IsTokenIdentity(id TokenIdentity) bool {
+	return lexeme.Token == id
+}
+
 // GetTokenOffset will return the offset data captured when the token was matched.
 func (node NodeLexeme) GetTokenOffset() TokenOffset {
 	return node.Offset

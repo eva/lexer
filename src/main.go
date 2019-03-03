@@ -5,15 +5,18 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	examples "./examples/json"
 	"./parser"
-	"./parser/ast/printer"
+	"./printer"
 
 	"github.com/fatih/color"
 )
 
 func main() {
+	grammar := examples.Grammar
+
 	reader := bufio.NewReader(os.Stdin)
 
 	text, _ := reader.ReadString('\n')
@@ -23,10 +26,12 @@ func main() {
 	fmt.Println(fmt.Sprintf("%s", text))
 	fmt.Println("")
 
-	sequence, index, err := parser.Tokenise(examples.Grammar, text)
+	tokenisestart := time.Now()
+	sequence, index, err := parser.Tokenise(grammar, text)
+	tokeniseduration := time.Since(tokenisestart)
 
-	fmt.Println(color.YellowString(fmt.Sprintf("Tokenised to %d tokens:", sequence.Count())))
-	printer.PrintLexemeSequence(sequence)
+	fmt.Println(color.YellowString(fmt.Sprintf("Tokenised to %d tokens: (time: %s)", sequence.Count(), tokeniseduration)))
+	printer.PrintLexemeSequence(grammar, sequence)
 	fmt.Println("")
 
 	if err != nil {
@@ -35,11 +40,13 @@ func main() {
 		fmt.Println(fmt.Sprintf("Message: %#v", err))
 	}
 
-	node, err := parser.ParseAnySequence(examples.Grammar, sequence)
+	parsestart := time.Now()
+	node, err := parser.ParseAnySequence(grammar, sequence)
+	parseduration := time.Since(parsestart)
 
-	fmt.Println(color.YellowString("Node Tree:"))
+	fmt.Println(color.YellowString(fmt.Sprintf("Node Tree: (time: %s)", parseduration)))
 	printer := printer.NodePrinter{}
-	printer.Print(examples.Grammar, node)
+	printer.Print(grammar, node)
 	fmt.Println("")
 
 	if err != nil {
