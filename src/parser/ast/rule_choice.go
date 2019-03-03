@@ -4,14 +4,14 @@ package ast
 // The node kind returned is dependant of the rule that matched first.
 type RuleChoice struct {
 	Rule
-	Rules RuleSet
+	Rules RuleCollection
 }
 
 // Match will attempt a match on all rules in its ruleset and returns the first one that matches.
 // The returned node kind is directly passed from the proxied rule, therefore this rule is not represented as a node.
 func (rule RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
 	if rule.Rules.IsEmpty() {
-		err := NewErrRuleChoiceEmptyRuleSet(rule)
+		err := NewErrRuleChoiceEmptyRuleCollection(rule)
 		return false, sequence, nil, err
 	}
 

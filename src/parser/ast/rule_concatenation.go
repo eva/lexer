@@ -2,12 +2,12 @@ package ast
 
 type RuleConcatenation struct {
 	Rule
-	Rules RuleSet
+	Rules RuleCollection
 }
 
 func (r RuleConcatenation) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
 	if r.Rules.IsEmpty() {
-		err := NewErrRuleConcatenationEmptyRuleSet(r)
+		err := NewErrRuleConcatenationEmptyRuleCollection(r)
 		return false, sequence, nil, err
 	}
 

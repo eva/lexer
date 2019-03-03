@@ -16,7 +16,7 @@ func TestParseAnySequence_ParseReturnNode_WithRuleToken(test *testing.T) {
 				},
 			},
 		},
-		Rules: ast.RuleSet{
+		Rules: ast.RuleCollection{
 			ast.RuleToken{Target: 1},
 		},
 	}
@@ -55,10 +55,10 @@ func TestParseAnySequence_ParseReturnNode_WithRuleConcatenation(test *testing.T)
 				},
 			},
 		},
-		Rules: ast.RuleSet{
+		Rules: ast.RuleCollection{
 			ast.RuleConcatenation{
 				Rule: ast.Rule{Identity: 10},
-				Rules: ast.RuleSet{
+				Rules: ast.RuleCollection{
 					ast.RuleToken{Target: 1},
 					ast.RuleToken{Target: 2},
 				},

@@ -108,17 +108,17 @@ var Grammar = ast.Grammar{
 			},
 		},
 	},
-	Rules: ast.RuleSet{
+	Rules: ast.RuleCollection{
 		// Expression
 		ast.RuleConcatenation{
 			Rule: ast.Rule{Identity: RuleExpression},
-			Rules: ast.RuleSet{
+			Rules: ast.RuleCollection{
 				ast.RuleReference{Target: RuleExpressionSide},                    // Left
 				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}, // Whitespace?
 				ast.RuleReference{Target: RuleOperator},                          // Operator
 				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}, // Whitespace?
 				ast.RuleChoice{ // Right
-					Rules: ast.RuleSet{
+					Rules: ast.RuleCollection{
 						ast.RuleReference{Target: RuleExpression},
 						ast.RuleReference{Target: RuleExpressionSide},
 					},
@@ -129,7 +129,7 @@ var Grammar = ast.Grammar{
 		//  This represents all the tokens that can be on either side of an expression.
 		ast.RuleChoice{
 			Rule: ast.Rule{Identity: RuleExpressionSide, Ignore: true},
-			Rules: ast.RuleSet{
+			Rules: ast.RuleCollection{
 				ast.RuleReference{Target: RuleVariable},
 				ast.RuleReference{Target: RuleIdentifier},
 			},
@@ -137,7 +137,7 @@ var Grammar = ast.Grammar{
 		// Variable
 		ast.RuleConcatenation{
 			Rule: ast.Rule{Identity: RuleVariable},
-			Rules: ast.RuleSet{
+			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenDollar},
 				ast.RuleToken{Target: TokenIdentifier},
 			},
@@ -146,7 +146,7 @@ var Grammar = ast.Grammar{
 		//  A top level rule that includes all types of identifers.
 		ast.RuleChoice{
 			Rule: ast.Rule{Identity: RuleIdentifier},
-			Rules: ast.RuleSet{
+			Rules: ast.RuleCollection{
 				ast.RuleReference{Target: RuleIdentifierBoolean},
 				ast.RuleReference{Target: RuleIdentifierNull},
 				ast.RuleReference{Target: RuleIdentifierFloat},
@@ -156,7 +156,7 @@ var Grammar = ast.Grammar{
 		// Identifier Boolean
 		ast.RuleChoice{
 			Rule: ast.Rule{Identity: RuleIdentifierBoolean},
-			Rules: ast.RuleSet{
+			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenLiteralBooleanFalse},
 				ast.RuleToken{Target: TokenLiteralBooleanTrue},
 			},
@@ -164,7 +164,7 @@ var Grammar = ast.Grammar{
 		// Identifer Null
 		ast.RuleChoice{
 			Rule: ast.Rule{Identity: RuleIdentifierNull},
-			Rules: ast.RuleSet{
+			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenLiteralNull},
 			},
 		},
@@ -173,14 +173,14 @@ var Grammar = ast.Grammar{
 		//  the integer is placed below this rule in heirarchy.
 		ast.RuleChoice{
 			Rule: ast.Rule{Identity: RuleIdentifierFloat},
-			Rules: ast.RuleSet{
+			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenLiteralFloat},
 			},
 		},
 		// Identifer Integer
 		ast.RuleChoice{
 			Rule: ast.Rule{Identity: RuleIdentifierInteger},
-			Rules: ast.RuleSet{
+			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenLiteralInteger},
 			},
 		},
@@ -189,7 +189,7 @@ var Grammar = ast.Grammar{
 		//  For this reason operators are one of the lowest rules, and slowest to get too.
 		ast.RuleChoice{
 			Rule: ast.Rule{Identity: RuleOperator},
-			Rules: ast.RuleSet{
+			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenAddition},
 				ast.RuleToken{Target: TokenSubtraction},
 				ast.RuleToken{Target: TokenDivision},

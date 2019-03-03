@@ -33,10 +33,10 @@ func TestRuleReference_CannotFindReference(test *testing.T) {
 
 func TestRuleReference_FindReferenceRule(test *testing.T) {
 	grammar := Grammar{
-		Rules: RuleSet{
+		Rules: RuleCollection{
 			RuleChoice{
 				Rule: Rule{Identity: 1},
-				Rules: RuleSet{
+				Rules: RuleCollection{
 					RuleToken{Target: 10},
 					RuleToken{Target: 11},
 				},
@@ -63,7 +63,7 @@ func TestRuleReference_FindReferenceRule(test *testing.T) {
 
 func TestRuleReference_FoundRuleReturnItsNode(test *testing.T) {
 	grammar := Grammar{
-		Rules: RuleSet{
+		Rules: RuleCollection{
 			RuleToken{Rule: Rule{Identity: 1}, Target: 10},
 		},
 	}

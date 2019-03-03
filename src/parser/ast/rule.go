@@ -8,16 +8,16 @@ type RuleIdentity int
 // When a rule identity is not specifically given an identity we can match against this variable.
 const RuleIdentityNone RuleIdentity = 0
 
-// RuleSet is simply a collection of rule kind.
+// RuleCollection is simply a collection of rule kind.
 // This is defined simply as a shortcut and syntactical sugar when defining grammars.
-type RuleSet []RuleKind
+type RuleCollection []RuleKind
 
-func (ruleset RuleSet) Count() int {
-	return len(ruleset)
+func (collection RuleCollection) Count() int {
+	return len(collection)
 }
 
-func (ruleset RuleSet) IsEmpty() bool {
-	return ruleset.Count() == 0
+func (collection RuleCollection) IsEmpty() bool {
+	return collection.Count() == 0
 }
 
 // RuleKind is an interface that vaguely wraps the core functionality for lexical rules.
@@ -38,7 +38,7 @@ type Rule struct {
 // HasIdentity will validate that the rule has been initialised with a valid identity.
 // An identity is valid if its greater than the uninitialised value.
 func (rule Rule) HasIdentity() bool {
-	return rule.GetIdentity() != RuleIdentityNone
+	return rule.Identity != RuleIdentityNone
 }
 
 // GetIdentity returns the rule identity the rule was initialised with.

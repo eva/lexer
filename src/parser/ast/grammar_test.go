@@ -211,7 +211,7 @@ func TestGrammar_FindRule_WithNoRule(test *testing.T) {
 
 func TestGrammar_FindRule_WithRuleWrongIdentity(test *testing.T) {
 	grammar := Grammar{
-		Rules: RuleSet{
+		Rules: RuleCollection{
 			RuleToken{Rule: Rule{Identity: 1}},
 			RuleToken{Rule: Rule{Identity: 2}},
 		},
@@ -232,7 +232,7 @@ func TestGrammar_FindRule_WithRuleWrongIdentity(test *testing.T) {
 
 func TestGrammar_FindRule_CanMatchRule(test *testing.T) {
 	grammar := Grammar{
-		Rules: RuleSet{
+		Rules: RuleCollection{
 			RuleToken{Rule: Rule{Identity: 1}},
 			RuleToken{Rule: Rule{Identity: 2}},
 		},

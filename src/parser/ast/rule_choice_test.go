@@ -2,7 +2,7 @@ package ast
 
 import "testing"
 
-func TestRuleChoice_EmptyRuleSet(test *testing.T) {
+func TestRuleChoice_EmptyRuleCollection(test *testing.T) {
 	grammar := Grammar{}
 	sequence := LexemeSequence{}
 
@@ -22,10 +22,10 @@ func TestRuleChoice_EmptyRuleSet(test *testing.T) {
 	}
 
 	// Remember that errors are always pointers
-	_, instanceof := err.(*ErrRuleChoiceEmptyRuleSet)
+	_, instanceof := err.(*ErrRuleChoiceEmptyRuleCollection)
 
 	if instanceof == false {
-		test.Errorf(`Expected error to be an instance of ErrRuleChoiceEmptyRuleSet, instead got: %#v`, err)
+		test.Errorf(`Expected error to be an instance of ErrRuleChoiceEmptyRuleCollection, instead got: %#v`, err)
 	}
 }
 

@@ -7,25 +7,25 @@ type GrammarKind interface {
 	FindNamespace(id NamespaceIdentity) (found bool, namespace NamespaceKind)
 	FindToken(id TokenIdentity) (found bool, token TokenKind)
 	FindRule(id RuleIdentity) (found bool, rule RuleKind)
-	GetRules() RuleSet
+	GetRules() RuleCollection
 }
 
 // Grammar is a fully implemented `GrammarKind`.
 type Grammar struct {
 	Namespaces NamespaceCollection
 	Tokens     TokenCollection
-	Rules      RuleSet
+	Rules      RuleCollection
 }
 
 // FindRootNamespace is a shortcut method to find a namespace with the root identity.
-func (g Grammar) FindRootNamespace() (bool, NamespaceKind) {
-	return g.FindNamespace(NamespaceIdentityRoot)
+func (grammar Grammar) FindRootNamespace() (bool, NamespaceKind) {
+	return grammar.FindNamespace(NamespaceIdentityRoot)
 }
 
 // FindNamespace will attempt to find and return a namespace by id.
 // When the identity is not found then false is returned with a nil namespace.
-func (g Grammar) FindNamespace(id NamespaceIdentity) (bool, NamespaceKind) {
-	for _, namespace := range g.Namespaces {
+func (grammar Grammar) FindNamespace(id NamespaceIdentity) (bool, NamespaceKind) {
+	for _, namespace := range grammar.Namespaces {
 		if namespace.GetIdentity() == id {
 			return true, namespace
 		}
@@ -36,8 +36,8 @@ func (g Grammar) FindNamespace(id NamespaceIdentity) (bool, NamespaceKind) {
 
 // FindToken will attempt to find and return a token by id.
 // When the identity is not found then false is returned with a nil token.
-func (g Grammar) FindToken(id TokenIdentity) (bool, TokenKind) {
-	for _, token := range g.Tokens {
+func (grammar Grammar) FindToken(id TokenIdentity) (bool, TokenKind) {
+	for _, token := range grammar.Tokens {
 		if token.GetIdentity() == id {
 			return true, token
 		}
@@ -48,8 +48,8 @@ func (g Grammar) FindToken(id TokenIdentity) (bool, TokenKind) {
 
 // FindRule will attempt to find and return a rule by id.
 // When the identity is not found then false is returned with a nil rule.
-func (g Grammar) FindRule(id RuleIdentity) (bool, RuleKind) {
-	for _, rule := range g.Rules {
+func (grammar Grammar) FindRule(id RuleIdentity) (bool, RuleKind) {
+	for _, rule := range grammar.Rules {
 		if rule.GetIdentity() == id {
 			return true, rule
 		}
@@ -59,6 +59,6 @@ func (g Grammar) FindRule(id RuleIdentity) (bool, RuleKind) {
 }
 
 // GetRules will return all defined rules against the grammar.
-func (g Grammar) GetRules() RuleSet {
-	return g.Rules
+func (grammar Grammar) GetRules() RuleCollection {
+	return grammar.Rules
 }
