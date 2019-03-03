@@ -12,12 +12,12 @@ type NamespaceStack NamespaceSet
 type NamespaceKind interface {
 	GetIdentity() NamespaceIdentity
 	GetToken(id TokenIdentity) (found bool, token TokenKind)
-	GetTokens() TokenSet
+	GetTokens() TokenCollection
 }
 
 type Namespace struct {
 	Identity NamespaceIdentity
-	Tokens   TokenSet
+	Tokens   TokenCollection
 }
 
 func (n Namespace) GetIdentity() NamespaceIdentity {
@@ -34,6 +34,6 @@ func (n Namespace) GetToken(id TokenIdentity) (found bool, token TokenKind) {
 	return false, nil
 }
 
-func (n Namespace) GetTokens() TokenSet {
+func (n Namespace) GetTokens() TokenCollection {
 	return n.Tokens
 }

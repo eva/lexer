@@ -109,7 +109,7 @@ var Grammar = ast.Grammar{
 	Namespaces: ast.NamespaceSet{
 		ast.Namespace{
 			Identity: NamespaceRoot,
-			Tokens: ast.TokenSet{
+			Tokens: ast.TokenCollection{
 				ast.TokenRegex{Token: ast.Token{Identity: TokenWhitespace}, Expression: regexp.MustCompile(`\s+`)},
 
 				ast.TokenRegex{Token: ast.Token{Identity: TokenLiteralFloat}, Expression: regexp.MustCompile(`[0-9]+\.[0-9]+`)},
@@ -129,7 +129,7 @@ var Grammar = ast.Grammar{
 		},
 		ast.Namespace{
 			Identity: NamespaceString,
-			Tokens: ast.TokenSet{
+			Tokens: ast.TokenCollection{
 				ast.TokenRegex{Token: ast.Token{Identity: TokenLiteralString}, Expression: regexp.MustCompile(`(\\\"|[^"])+`)},
 				ast.TokenLiteral{Token: ast.Token{Identity: TokenSyntaxQuoteDouble, TransitionTo: ast.NamespaceIdentityShift}, Literal: `"`},
 			},

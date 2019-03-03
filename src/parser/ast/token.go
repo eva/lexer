@@ -33,8 +33,8 @@ const InvalidTokenIdentity TokenIdentity = 0
 
 type TokenIdentitySet []TokenIdentity
 
-// A TokenSet represents a set of TokenKind.
-type TokenSet []TokenKind
+// A TokenCollection represents a series of TokenKind in a collection.
+type TokenCollection []TokenKind
 
 // A TokenKind is a kind of lexical token.
 type TokenKind interface {

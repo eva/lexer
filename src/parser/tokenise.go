@@ -78,7 +78,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 	return sequence, index, nil
 }
 
-func TokeniseFirstLexeme(input string, tokens ast.TokenSet) (bool, ast.LexemeKind) {
+func TokeniseFirstLexeme(input string, tokens ast.TokenCollection) (bool, ast.LexemeKind) {
 	for _, token := range tokens {
 		matched, offset := token.Match(input)
 

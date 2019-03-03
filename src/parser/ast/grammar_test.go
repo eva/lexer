@@ -149,7 +149,7 @@ func TestGrammar_FindToken_WithNoToken(test *testing.T) {
 
 func TestGrammar_FindToken_WithTokenWrongIdentity(test *testing.T) {
 	grammar := Grammar{
-		Tokens: TokenSet{
+		Tokens: TokenCollection{
 			Token{Identity: 1},
 			Token{Identity: 2},
 		},
@@ -170,7 +170,7 @@ func TestGrammar_FindToken_WithTokenWrongIdentity(test *testing.T) {
 
 func TestGrammar_FindToken_CanMatchToken(test *testing.T) {
 	grammar := Grammar{
-		Tokens: TokenSet{
+		Tokens: TokenCollection{
 			Token{Identity: 1},
 			Token{Identity: 2},
 		},

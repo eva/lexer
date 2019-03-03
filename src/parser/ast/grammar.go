@@ -13,7 +13,7 @@ type GrammarKind interface {
 // Grammar is a fully implemented `GrammarKind`.
 type Grammar struct {
 	Namespaces NamespaceSet
-	Tokens     TokenSet
+	Tokens     TokenCollection
 	Rules      RuleSet
 }
 

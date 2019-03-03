@@ -10,7 +10,7 @@ func TestParseAnySequence_ParseReturnNode_WithRuleToken(test *testing.T) {
 	grammar := ast.Grammar{
 		Namespaces: ast.NamespaceSet{
 			ast.Namespace{
-				Tokens: ast.TokenSet{
+				Tokens: ast.TokenCollection{
 					ast.TokenLiteral{Token: ast.Token{Identity: 1}},
 					ast.TokenLiteral{Token: ast.Token{Identity: 2}},
 				},
@@ -49,7 +49,7 @@ func TestParseAnySequence_ParseReturnNode_WithRuleConcatenation(test *testing.T)
 	grammar := ast.Grammar{
 		Namespaces: ast.NamespaceSet{
 			ast.Namespace{
-				Tokens: ast.TokenSet{
+				Tokens: ast.TokenCollection{
 					ast.TokenLiteral{Token: ast.Token{Identity: 1}},
 					ast.TokenLiteral{Token: ast.Token{Identity: 2}},
 				},

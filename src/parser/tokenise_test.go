@@ -12,7 +12,7 @@ func TestTokenise(test *testing.T) {
 		Namespaces: ast.NamespaceSet{
 			ast.Namespace{
 				Identity: "root",
-				Tokens: ast.TokenSet{
+				Tokens: ast.TokenCollection{
 					ast.TokenLiteral{Token: ast.Token{Identity: 1}, Literal: "foo"},
 					ast.TokenLiteral{Token: ast.Token{Identity: 2}, Literal: "thing"},
 					ast.TokenLiteral{Token: ast.Token{Identity: 3}, Literal: "some"},
@@ -76,13 +76,13 @@ func TestTokeniseTraverseNamespace_StringQuoteExample(test *testing.T) {
 		Namespaces: ast.NamespaceSet{
 			ast.Namespace{
 				Identity: "root",
-				Tokens: ast.TokenSet{
+				Tokens: ast.TokenCollection{
 					ast.TokenLiteral{Token: ast.Token{Identity: 1, TransitionTo: "string-double-quoted"}, Literal: `"`},
 				},
 			},
 			ast.Namespace{
 				Identity: "string-double-quoted",
-				Tokens: ast.TokenSet{
+				Tokens: ast.TokenCollection{
 					ast.TokenLiteral{Token: ast.Token{Identity: 100, TransitionTo: ast.NamespaceIdentityShift}, Literal: `"`},
 					ast.TokenRegex{Token: ast.Token{Identity: 2}, Expression: regexp.MustCompile(`(\\\"|[^"])+`)},
 				},
@@ -135,7 +135,7 @@ func TestTokeniseTraverseNamespace_StringQuoteExample(test *testing.T) {
 }
 
 func TestTokeniseFirstToken(test *testing.T) {
-	tokens := ast.TokenSet{
+	tokens := ast.TokenCollection{
 		ast.TokenLiteral{Token: ast.Token{Identity: 1}, Literal: "foo"},
 		ast.TokenLiteral{Token: ast.Token{Identity: 2}, Literal: "thing"},
 		ast.TokenLiteral{Token: ast.Token{Identity: 3}, Literal: "some"},
