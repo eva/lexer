@@ -10,6 +10,19 @@ type NodeRuleKind interface {
 	Count() int
 }
 
+func NewRuleNode(rule RuleIdentity, nodes NodeSequence) NodeKind {
+	if rule == RuleIdentityNone {
+		return NodeNull{
+			Nodes: nodes,
+		}
+	}
+
+	return NodeRule{
+		Rule:  rule,
+		Nodes: nodes,
+	}
+}
+
 // NodeRule is an implementation of NodeRuleKind, this node will likely contain no lexical information.
 // All data available in the Lexeme should be available here as this is a matched token.
 type NodeRule struct {

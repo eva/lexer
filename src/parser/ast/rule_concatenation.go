@@ -30,10 +30,7 @@ func (r RuleConcatenation) Match(grammar GrammarKind, sequence LexemeSequence) (
 		nodes = nodes.Add(child)
 	}
 
-	node := NodeRule{
-		Rule:  r.GetIdentity(),
-		Nodes: nodes,
-	}
+	node := NewRuleNode(r.GetIdentity(), nodes)
 
 	return true, remaining, node, nil
 }

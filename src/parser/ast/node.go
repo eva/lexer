@@ -13,12 +13,30 @@ type NodeKind interface {
 	IsValid() bool
 }
 
-type NodeNull struct{}
+type NodeNull struct {
+	Nodes NodeSequence
+}
 
 func (NodeNull) GetNodeType() NodeType {
 	return NodeTypeNull
 }
 
 func (node NodeNull) IsValid() bool {
-	return false
+	if node.IsEmpty() {
+		return false
+	}
+
+	return true
+}
+
+func (node NodeNull) GetNodeSequence() NodeSequence {
+	return node.Nodes
+}
+
+func (node NodeNull) IsEmpty() bool {
+	return node.Nodes.Count() == 0
+}
+
+func (node NodeNull) Count() int {
+	return node.Nodes.Count()
 }

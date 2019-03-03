@@ -9,6 +9,14 @@ type NodeLexemeKind interface {
 	GetValue() string
 }
 
+func NewLexemeNode(lexeme LexemeKind) NodeKind {
+	return NodeLexeme{
+		Token:  lexeme.GetTokenIdentity(),
+		Offset: lexeme.GetTokenOffset(),
+		Value:  lexeme.GetValue(),
+	}
+}
+
 // NodeLexeme is an instance of NodeLexemeKind implementing the same interface as LexemeKind almost.
 // All data available in the Lexeme should be available here as this is a matched token.
 type NodeLexeme struct {

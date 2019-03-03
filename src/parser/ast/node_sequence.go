@@ -22,10 +22,32 @@ func (sequence NodeSequence) IsEmpty() bool {
 // Node kinds such as rule and lexeme are added.
 // Others are ignored and the same sequence is returned instead.
 func (sequence NodeSequence) Add(node NodeKind) NodeSequence {
-	switch node.(type) {
-	case NodeNull:
-		return sequence
+	if null, instanceof := node.(NodeNull); instanceof {
+		if null.IsEmpty() {
+			return sequence
+		}
+
+		return sequence.Merge(null.GetNodeSequence())
 	}
 
 	return append(sequence, node)
+}
+
+// Merge will append the given node sequence to the end of this node sequence.
+// This function uses the Add method so the same rules apply.
+func (sequence NodeSequence) Merge(nodes NodeSequence) NodeSequence {
+	this := sequence
+
+	for _, node := range nodes {
+		// Skip all null nodes.
+		// This is because adding a null node should not allow cascading of its sequence.
+		// At least this is the case right now, I haven't got a case to allow this.
+		if _, instanceof := node.(NodeNull); instanceof {
+			continue
+		}
+
+		this = this.Add(node)
+	}
+
+	return this
 }

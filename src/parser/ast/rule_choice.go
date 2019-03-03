@@ -29,10 +29,8 @@ func (rule RuleChoice) Match(grammar GrammarKind, sequence LexemeSequence) (bool
 			continue
 		}
 
-		node := NodeRule{
-			Rule:  rule.GetIdentity(),
-			Nodes: NodeSequence{child},
-		}
+		nodes := NodeSequence{child}
+		node := NewRuleNode(rule.GetIdentity(), nodes)
 
 		return true, remaining, node, nil
 	}

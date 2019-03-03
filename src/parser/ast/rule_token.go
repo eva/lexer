@@ -22,12 +22,7 @@ func (rule RuleToken) Match(grammar GrammarKind, sequence LexemeSequence) (bool,
 		return false, sequence, nil, err
 	}
 
-	node := NodeLexeme{
-		Token:  lexeme.GetTokenIdentity(),
-		Offset: lexeme.GetTokenOffset(),
-		Value:  lexeme.GetValue(),
-	}
-
+	node := NewLexemeNode(lexeme)
 	remaining := sequence[1:]
 
 	return true, remaining, node, nil

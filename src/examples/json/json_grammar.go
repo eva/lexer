@@ -101,6 +101,9 @@ const (
 	GrammarRuleRangeUpper
 )
 
+// OptionalWhitespace quick hand.
+var OptionalWhitespace = ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}
+
 // Grammar represents the PHP grammar.
 var Grammar = ast.Grammar{
 	Namespaces: ast.NamespaceSet{
@@ -137,20 +140,40 @@ var Grammar = ast.Grammar{
 		ast.RuleConcatenation{
 			Rule: ast.Rule{Identity: RuleObject},
 			Rules: ast.RuleSet{
-				ast.RuleToken{Target: TokenSyntaxCurlyBraceOpen},              // Curly Open
-				ast.RuleOptional{Target: ast.RuleReference{Target: RulePair}}, // Pair?
-				ast.RuleToken{Target: TokenSyntaxCurlyBraceClose},             // Curly Close
+				ast.RuleToken{Target: TokenSyntaxCurlyBraceOpen}, // Curly Open
+				OptionalWhitespace, // Whitespace?
+				ast.RuleOptional{
+					Target: ast.RuleConcatenation{
+						Rules: ast.RuleSet{
+							ast.RuleReference{Target: RulePair},
+							ast.RuleRepetition{
+								Target: ast.RuleConcatenation{
+									Rules: ast.RuleSet{
+										OptionalWhitespace, // Whitespace?
+										ast.RuleToken{Target: TokenSyntaxComma},
+										OptionalWhitespace, // Whitespace?
+										ast.RuleReference{Target: RulePair},
+									},
+								},
+								Minimum: 0,
+								Maximum: -1,
+							},
+						},
+					},
+				},
+				OptionalWhitespace, // Whitespace?
+				ast.RuleToken{Target: TokenSyntaxCurlyBraceClose}, // Curly Close
 			},
 		},
 		// Pair
 		ast.RuleConcatenation{
 			Rule: ast.Rule{Identity: RulePair},
 			Rules: ast.RuleSet{
-				ast.RuleReference{Target: RuleLiteralString},                     // Key
-				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}, // Whitespace?
-				ast.RuleToken{Target: TokenSyntaxColon},                          // Colon
-				ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}, // Whitespace?
-				ast.RuleReference{Target: RuleLiteral},                           // Literal
+				ast.RuleReference{Target: RuleLiteralString}, // Key
+				OptionalWhitespace,                           // Whitespace?
+				ast.RuleToken{Target: TokenSyntaxColon},      // Colon
+				OptionalWhitespace,                           // Whitespace?
+				ast.RuleReference{Target: RuleLiteral},       // Literal
 			},
 		},
 		// Literal
@@ -169,9 +192,9 @@ var Grammar = ast.Grammar{
 		ast.RuleConcatenation{
 			Rule: ast.Rule{Identity: RuleLiteralString},
 			Rules: ast.RuleSet{
-				ast.RuleToken{Target: TokenSyntaxQuoteDouble},
-				ast.RuleToken{Target: TokenLiteralString},
-				ast.RuleToken{Target: TokenSyntaxQuoteDouble},
+				ast.RuleToken{Target: TokenSyntaxQuoteDouble}, // Double Quote
+				ast.RuleToken{Target: TokenLiteralString},     // Characters
+				ast.RuleToken{Target: TokenSyntaxQuoteDouble}, // Double Quote
 			},
 		},
 		// Literal Boolean

@@ -115,3 +115,21 @@ func (e ErrRuleChoiceNoneMatched) Error() string {
 
 	return fmt.Sprintf(`[ErrRuleTokenMatchFailure] %s`, message)
 }
+
+type ErrRuleRepetitionMaximumZero struct {
+	RuleType     string
+	RuleIdentity RuleIdentity
+}
+
+func NewErrRuleRepetitionMaximumZero(rule RuleKind) error {
+	return &ErrRuleRepetitionMaximumZero{
+		RuleType:     fmt.Sprintf(`%T`, rule),
+		RuleIdentity: rule.GetIdentity(),
+	}
+}
+
+func (e ErrRuleRepetitionMaximumZero) Error() string {
+	message := `Reptition rule cannot function with a zero maximum.`
+
+	return fmt.Sprintf(`[ErrRuleRepetitionMaximumZero] %s`, message)
+}

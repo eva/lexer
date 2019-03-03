@@ -22,28 +22,59 @@ func TestRuleChoice_EmptyRuleSet(test *testing.T) {
 	}
 
 	// Remember that errors are always pointers
-	_, casted := err.(*ErrRuleChoiceEmptyRuleSet)
+	_, instanceof := err.(*ErrRuleChoiceEmptyRuleSet)
 
-	if casted == false {
+	if instanceof == false {
 		test.Errorf(`Expected error to be an instance of ErrRuleChoiceEmptyRuleSet, instead got: %#v`, err)
 	}
 }
 
-func TestRuleChoice(test *testing.T) {
-	var fooTokenIdentity TokenIdentity = 1
-	var barTokenIdentity TokenIdentity = 2
+func TestRuleChoice_MatchFailureOneMustMatch(test *testing.T) {
+	grammar := Grammar{}
+	sequence := LexemeSequence{
+		Lexeme{Token: 3},
+		Lexeme{Token: 4},
+	}
 
-	fooRule := RuleToken{Target: fooTokenIdentity}
-	barRule := RuleToken{Target: barTokenIdentity}
+	a := RuleToken{Target: 1}
+	b := RuleToken{Target: 2}
 
 	rule := RuleChoice{
 		Rule:  Rule{Identity: 3000},
-		Rules: []RuleKind{fooRule, barRule},
+		Rules: []RuleKind{a, b},
 	}
 
+	matched, remaining, _, err := rule.Match(grammar, sequence)
+
+	if matched == true {
+		test.Error(`Expected no match when neither the rules can match`)
+		return
+	}
+
+	if remaining.Count() != sequence.Count() {
+		test.Error(`Expected remaining sequence to be the same as what was given`)
+	}
+
+	// Remember that errors are always pointers
+	_, instanceof := err.(*ErrRuleChoiceNoneMatched)
+
+	if instanceof == false {
+		test.Errorf(`Expected error to be an instance of ErrRuleChoiceNoneMatched, instead got: %#v`, err)
+	}
+}
+
+func TestRuleChoice_MatchOne(test *testing.T) {
 	grammar := Grammar{}
 	sequence := LexemeSequence{
-		Lexeme{Token: barTokenIdentity},
+		Lexeme{Token: 2},
+	}
+
+	a := RuleToken{Target: 1}
+	b := RuleToken{Target: 2}
+
+	rule := RuleChoice{
+		Rule:  Rule{Identity: 3000},
+		Rules: []RuleKind{a, b},
 	}
 
 	matched, remaining, response, err := rule.Match(grammar, sequence)
@@ -64,7 +95,7 @@ func TestRuleChoice(test *testing.T) {
 		return
 	}
 
-	if node.IsEmpty() == false {
+	if node.IsEmpty() == true {
 		test.Errorf(`Node should not be empty, instead got: %#v`, node.GetNodeSequence())
 		return
 	}
@@ -83,7 +114,7 @@ func TestRuleChoice(test *testing.T) {
 		return
 	}
 
-	if child.GetTokenIdentity() != barTokenIdentity {
+	if child.GetTokenIdentity() != 2 {
 		test.Errorf(`Token did not match expected token`)
 		return
 	}
