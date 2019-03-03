@@ -7,6 +7,19 @@ import (
 	ast ".."
 )
 
+func PrintLexemeSequence(sequence ast.LexemeSequence) {
+	for _, lexeme := range sequence {
+		nsid := lexeme.GetNamespaceIdentity()
+
+		tid := lexeme.GetTokenIdentity()
+
+		offset := lexeme.GetTokenOffset()
+		value := lexeme.GetValue()
+
+		fmt.Println(fmt.Sprintf(`%T: @%s [t:%d] [%d:%d] %#v`, lexeme, nsid, tid, offset[0], offset[1], value))
+	}
+}
+
 type NodePrinter struct {
 	indent int
 }
@@ -48,13 +61,14 @@ func (printer NodePrinter) printNodeLexeme(grammar ast.Grammar, node ast.NodeLex
 
 	tid := node.GetTokenIdentity()
 
+	offset := node.GetTokenOffset()
 	value := node.GetValue()
 
-	fmt.Println(fmt.Sprintf(`%s%T: @%s [Token: %d] %s`, indent, node, nsid, tid, value))
+	fmt.Println(fmt.Sprintf(`%s%T: @%s [t:%d] [%d:%d] %#v`, indent, node, nsid, tid, offset[0], offset[1], value))
 }
 
 func (printer NodePrinter) printNodeRule(grammar ast.Grammar, node ast.NodeRule) {
-	fmt.Println(fmt.Sprintf(`%s%T: [Rule: %d]`, printer.getIndent(), node, node.GetRuleIdentity()))
+	fmt.Println(fmt.Sprintf(`%s%T: [r:%d]`, printer.getIndent(), node, node.GetRuleIdentity()))
 	printer.incrementIndent()
 	printer.PrintSequence(grammar, node.GetNodeSequence())
 	printer.decrementIndent()

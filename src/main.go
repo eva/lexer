@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -20,15 +19,14 @@ func main() {
 	text, _ := reader.ReadString('\n')
 	text = strings.Trim(text, "\n")
 
-	fmt.Println(color.YellowString("Read:"))
-	fmt.Println(fmt.Sprintf("%#v", text))
+	fmt.Println(color.YellowString(fmt.Sprintf("Read %d characters:", len(text))))
+	fmt.Println(fmt.Sprintf("%s", text))
 	fmt.Println("")
 
 	sequence, index, err := parser.Tokenise(examples.Grammar, text)
 
-	value, _ := json.Marshal(sequence)
-	fmt.Println(color.YellowString("Token Sequence:"))
-	fmt.Println(string(value))
+	fmt.Println(color.YellowString(fmt.Sprintf("Tokenised to %d tokens:", sequence.Count())))
+	printer.PrintLexemeSequence(sequence)
 	fmt.Println("")
 
 	if err != nil {
@@ -39,9 +37,10 @@ func main() {
 
 	node, err := parser.ParseAnySequence(examples.Grammar, sequence)
 
-	fmt.Println(color.YellowString("Node:"))
+	fmt.Println(color.YellowString("Node Tree:"))
 	printer := printer.NodePrinter{}
 	printer.Print(examples.Grammar, node)
+	fmt.Println("")
 
 	if err != nil {
 		fmt.Println(color.RedString("Error:"))

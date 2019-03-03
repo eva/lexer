@@ -36,7 +36,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 		namespace := stack.Current()
 
 		fragment := input[index:]
-		matched, lexeme := TokeniseFirstLexeme(fragment, namespace)
+		matched, lexeme := TokeniseFirstLexeme(index, fragment, namespace)
 
 		if matched == false {
 			return sequence, index, ErrTokeniserCannotMatchToken
@@ -65,7 +65,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 		}
 
 		offset := lexeme.GetTokenOffset()
-		index = index + (offset[0] + offset[1])
+		index = offset[0] + offset[1]
 
 		sequence = append(sequence, lexeme)
 	}
@@ -77,7 +77,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 	return sequence, index, nil
 }
 
-func TokeniseFirstLexeme(input string, namespace ast.NamespaceKind) (bool, ast.LexemeKind) {
+func TokeniseFirstLexeme(index int, input string, namespace ast.NamespaceKind) (bool, ast.LexemeKind) {
 	tokens := namespace.GetTokens()
 
 	for _, token := range tokens {
@@ -90,6 +90,10 @@ func TokeniseFirstLexeme(input string, namespace ast.NamespaceKind) (bool, ast.L
 		if offset[0] != 0 {
 			continue
 		}
+
+		// The offset returned from the token will always be at position zero at this point.
+		// We can now normalise this with the index provided.
+		offset = ast.TokenOffset{index, offset[1]}
 
 		value := input[0:offset[1]]
 		lexeme := ast.Lexeme{
