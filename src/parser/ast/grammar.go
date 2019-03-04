@@ -12,7 +12,6 @@ type GrammarKind interface {
 // Grammar is a fully implemented `GrammarKind`.
 type Grammar struct {
 	Namespaces NamespaceCollection
-	Tokens     TokenCollection // @todo Remove, can be implied from Namespaces
 	Rules      RuleCollection
 }
 
@@ -23,6 +22,7 @@ func (grammar Grammar) FindRootNamespace() (bool, NamespaceKind) {
 
 // FindNamespace will attempt to find and return a namespace by id.
 // When the identity is not found then false is returned with a nil namespace.
+// When the namespace is found then true is returned with the found namepsace.
 func (grammar Grammar) FindNamespace(id NamespaceIdentity) (bool, NamespaceKind) {
 	for _, namespace := range grammar.Namespaces {
 		if namespace.GetIdentity() == id {
@@ -33,8 +33,9 @@ func (grammar Grammar) FindNamespace(id NamespaceIdentity) (bool, NamespaceKind)
 	return false, nil
 }
 
-// FindRule will attempt to find and return a rule by id.
+// FindRule will attempt to find and return a rule by its identity.
 // When the identity is not found then false is returned with a nil rule.
+// When the rule is found then true is returned with the found rule.
 func (grammar Grammar) FindRule(id RuleIdentity) (bool, RuleKind) {
 	for _, rule := range grammar.Rules {
 		if rule.GetIdentity() == id {
