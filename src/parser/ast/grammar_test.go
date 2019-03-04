@@ -132,68 +132,6 @@ func TestGrammar_FindNamespace_CanMatchNamespace(test *testing.T) {
 	}
 }
 
-func TestGrammar_FindToken_WithNoToken(test *testing.T) {
-	grammar := Grammar{}
-	found, token := grammar.FindToken(1)
-
-	if found != false {
-		test.Error(`Expected to have not found a token`)
-		return
-	}
-
-	if token != nil {
-		test.Errorf(`Expected to have a nil token but got: %#v`, token)
-		return
-	}
-}
-
-func TestGrammar_FindToken_WithTokenWrongIdentity(test *testing.T) {
-	grammar := Grammar{
-		Tokens: TokenCollection{
-			Token{Identity: 1},
-			Token{Identity: 2},
-		},
-	}
-
-	found, token := grammar.FindToken(3)
-
-	if found != false {
-		test.Error(`Expected to have not found a token as identity is not defined`)
-		return
-	}
-
-	if token != nil {
-		test.Errorf(`Expected to have a nil token but got: %#v`, token)
-		return
-	}
-}
-
-func TestGrammar_FindToken_CanMatchToken(test *testing.T) {
-	grammar := Grammar{
-		Tokens: TokenCollection{
-			Token{Identity: 1},
-			Token{Identity: 2},
-		},
-	}
-
-	found, token := grammar.FindToken(2)
-
-	if found != true {
-		test.Error(`Expected to find token as identity is defined`)
-		return
-	}
-
-	if token == nil {
-		test.Error(`Expected that when "found=true" a token should be returned also`)
-		return
-	}
-
-	if token.GetIdentity() != 2 {
-		test.Errorf(`Expected to have found token by identity, instead got: %#v`, token)
-		return
-	}
-}
-
 func TestGrammar_FindRule_WithNoRule(test *testing.T) {
 	grammar := Grammar{}
 	found, rule := grammar.FindRule(1)
