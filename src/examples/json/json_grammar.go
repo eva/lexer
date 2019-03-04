@@ -6,46 +6,6 @@ import (
 	"../../parser/ast"
 )
 
-/*
-%skip   space          \s
-// Scalars.
-%token  true           true
-%token  false          false
-%token  null           null
-// Strings.
-%token  quote_         "        -> string
-%token  string:string  [^"]+
-%token  string:_quote  "        -> default
-// Objects.
-%token  brace_         {
-%token _brace          }
-// Arrays.
-%token  bracket_       \[
-%token _bracket        \]
-// Rest.
-%token  colon          :
-%token  comma          ,
-%token  number         \d+
-
-value:
-    <true> | <false> | <null> | string() | object() | array() | number()
-
-string:
-    ::quote_:: <string> ::_quote::
-
-number:
-    <number>
-
-#object:
-    ::brace_:: pair() ( ::comma:: pair() )* ::_brace::
-
-#pair:
-    string() ::colon:: value()
-
-#array:
-    ::bracket_:: value() ( ::comma:: value() )* ::_bracket::
-*/
-
 // JSON lexical tokens.
 // These are all the valid tokens for the language.
 const (
@@ -95,6 +55,8 @@ const (
 	RuleLiteralString
 
 	// 8
+	RuleValue
+	RuleArray
 	RuleObject
 	RulePair
 
@@ -108,6 +70,7 @@ var OptionalWhitespace = ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhi
 var Grammar = ast.Grammar{
 	IgnoreTokens: ast.TokenIdentityCollection{
 		TokenWhitespace,
+		TokenSyntaxQuoteDouble,
 	},
 	Namespaces: ast.NamespaceCollection{
 		ast.Namespace{
@@ -139,6 +102,44 @@ var Grammar = ast.Grammar{
 		},
 	},
 	Rules: ast.RuleCollection{
+		// Value
+		ast.RuleChoice{
+			Rule: ast.Rule{Identity: RuleValue},
+			Rules: ast.RuleCollection{
+				ast.RuleReference{Target: RuleLiteral},
+				ast.RuleReference{Target: RuleObject},
+				ast.RuleReference{Target: RuleArray},
+			},
+		},
+		// Array
+		ast.RuleConcatenation{
+			Rule: ast.Rule{Identity: RuleArray},
+			Rules: ast.RuleCollection{
+				ast.RuleToken{Target: TokenSyntaxSquareBracketOpen}, // Square Open
+				OptionalWhitespace, // Whitespace?
+				ast.RuleOptional{
+					Target: ast.RuleConcatenation{
+						Rules: ast.RuleCollection{
+							ast.RuleReference{Target: RuleValue},
+							ast.RuleRepetition{
+								Target: ast.RuleConcatenation{
+									Rules: ast.RuleCollection{
+										OptionalWhitespace, // Whitespace?
+										ast.RuleToken{Target: TokenSyntaxComma},
+										OptionalWhitespace, // Whitespace?
+										ast.RuleReference{Target: RuleValue},
+									},
+								},
+								Minimum: 0,
+								Maximum: -1,
+							},
+						},
+					},
+				},
+				OptionalWhitespace, // Whitespace?
+				ast.RuleToken{Target: TokenSyntaxSquareBracketClose}, // Square Close
+			},
+		},
 		// Object
 		ast.RuleConcatenation{
 			Rule: ast.Rule{Identity: RuleObject},
@@ -176,7 +177,7 @@ var Grammar = ast.Grammar{
 				OptionalWhitespace,                           // Whitespace?
 				ast.RuleToken{Target: TokenSyntaxColon},      // Colon
 				OptionalWhitespace,                           // Whitespace?
-				ast.RuleReference{Target: RuleLiteral},       // Literal
+				ast.RuleReference{Target: RuleValue},         // Value
 			},
 		},
 		// Literal
