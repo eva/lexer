@@ -11,8 +11,8 @@ type NamespaceStack NamespaceCollection
 
 type NamespaceKind interface {
 	GetIdentity() NamespaceIdentity
-	GetToken(id TokenIdentity) (found bool, token TokenKind)
 	GetTokens() TokenCollection
+	FindToken(id TokenIdentity) (found bool, token TokenKind)
 }
 
 type Namespace struct {
@@ -24,7 +24,11 @@ func (n Namespace) GetIdentity() NamespaceIdentity {
 	return n.Identity
 }
 
-func (n Namespace) GetToken(id TokenIdentity) (found bool, token TokenKind) {
+func (n Namespace) GetTokens() TokenCollection {
+	return n.Tokens
+}
+
+func (n Namespace) FindToken(id TokenIdentity) (found bool, token TokenKind) {
 	for _, token := range n.Tokens {
 		if token.GetIdentity() == id {
 			return true, token
@@ -32,8 +36,4 @@ func (n Namespace) GetToken(id TokenIdentity) (found bool, token TokenKind) {
 	}
 
 	return false, nil
-}
-
-func (n Namespace) GetTokens() TokenCollection {
-	return n.Tokens
 }

@@ -160,7 +160,7 @@ func TestTokeniseFirstToken(test *testing.T) {
 		i = i + 1
 
 		namespace := ast.Namespace{Tokens: tokens}
-		matched, lexeme := TokeniseFirstLexeme(data.input, namespace)
+		matched, lexeme := TokeniseFirstLexeme(0, data.input, namespace)
 
 		if matched != data.matched {
 			test.Errorf(`[%d] Matched %v is expected to be %v`, i, matched, data.matched)

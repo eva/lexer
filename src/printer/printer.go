@@ -76,11 +76,20 @@ func prepareLexemeKindOutput(grammar ast.GrammarKind, lexeme ast.LexemeKind) str
 	offset := lexeme.GetTokenOffset()
 	value := lexeme.GetValue()
 
+	_, namespace := grammar.FindNamespace(nsid)
+	_, token := namespace.FindToken(tid)
+	name := token.GetName()
+
+	if name == "" {
+		name = "unknown"
+	}
+
 	return fmt.Sprintf(
-		`%s: %s/%s [%s:%s] %s`,
+		`%s: %s/%s(%s) [%s:%s] %s`,
 		color.WhiteString(`%T`, lexeme),
 		color.MagentaString(`@%s`, nsid),
-		color.YellowString(`%d`, tid),
+		color.YellowString(`%s`, name),
+		fmt.Sprintf(`%d`, tid),
 		color.GreenString(`%d`, offset[0]),
 		color.GreenString(`%d`, offset[1]),
 		color.CyanString(`%#v`, value),

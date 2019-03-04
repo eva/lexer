@@ -42,7 +42,7 @@ func Tokenise(grammar ast.GrammarKind, input string) (ast.LexemeSequence, int, e
 			return sequence, index, ErrTokeniserCannotMatchToken
 		}
 
-		found, token := namespace.GetToken(lexeme.GetTokenIdentity())
+		found, token := namespace.FindToken(lexeme.GetTokenIdentity())
 
 		if found == false {
 			panic(`Please make me error`)
