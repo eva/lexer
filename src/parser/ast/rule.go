@@ -8,6 +8,10 @@ type RuleIdentity int
 // When a rule identity is not specifically given an identity we can match against this variable.
 const RuleIdentityNone RuleIdentity = 0
 
+type RuleName string
+
+const RuleNameNone = ""
+
 // RuleCollection is simply a collection of rule kind.
 // This is defined simply as a shortcut and syntactical sugar when defining grammars.
 type RuleCollection []RuleKind
@@ -25,6 +29,7 @@ func (collection RuleCollection) IsEmpty() bool {
 type RuleKind interface {
 	HasIdentity() bool
 	GetIdentity() RuleIdentity
+	GetName() RuleName
 	ShouldIgnore() bool
 	Match(grammar GrammarKind, sequence LexemeSequence) (matched bool, remaining LexemeSequence, node NodeKind, err error)
 }
@@ -32,6 +37,7 @@ type RuleKind interface {
 // Rule is a basic core implementation for `RuleKind` minus the match method.
 type Rule struct {
 	Identity RuleIdentity
+	Name     RuleName
 	Ignore   bool
 }
 
@@ -46,6 +52,10 @@ func (rule Rule) HasIdentity() bool {
 // Make sure to check against `HasIdentity()` first.
 func (rule Rule) GetIdentity() RuleIdentity {
 	return rule.Identity
+}
+
+func (rule Rule) GetName() RuleName {
+	return rule.Name
 }
 
 // ShouldIgnore returns if the rule should be ignored from root level parsing.

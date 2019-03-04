@@ -104,7 +104,7 @@ var Grammar = ast.Grammar{
 	Rules: ast.RuleCollection{
 		// Value
 		ast.RuleChoice{
-			Rule: ast.Rule{Identity: RuleValue},
+			Rule: ast.Rule{Identity: RuleValue, Name: `RuleValue`},
 			Rules: ast.RuleCollection{
 				ast.RuleReference{Target: RuleLiteral},
 				ast.RuleReference{Target: RuleObject},
@@ -113,7 +113,7 @@ var Grammar = ast.Grammar{
 		},
 		// Array
 		ast.RuleConcatenation{
-			Rule: ast.Rule{Identity: RuleArray},
+			Rule: ast.Rule{Identity: RuleArray, Name: `RuleArray`},
 			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenSyntaxSquareBracketOpen}, // Square Open
 				OptionalWhitespace, // Whitespace?
@@ -142,7 +142,7 @@ var Grammar = ast.Grammar{
 		},
 		// Object
 		ast.RuleConcatenation{
-			Rule: ast.Rule{Identity: RuleObject},
+			Rule: ast.Rule{Identity: RuleObject, Name: `RuleObject`},
 			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenSyntaxCurlyBraceOpen}, // Curly Open
 				OptionalWhitespace, // Whitespace?
@@ -171,7 +171,7 @@ var Grammar = ast.Grammar{
 		},
 		// Pair
 		ast.RuleConcatenation{
-			Rule: ast.Rule{Identity: RulePair},
+			Rule: ast.Rule{Identity: RulePair, Name: `RulePair`},
 			Rules: ast.RuleCollection{
 				ast.RuleReference{Target: RuleLiteralString}, // Key
 				OptionalWhitespace,                           // Whitespace?
@@ -183,7 +183,7 @@ var Grammar = ast.Grammar{
 		// Literal
 		//  A top level rule that includes all types of identifers.
 		ast.RuleChoice{
-			Rule: ast.Rule{Identity: RuleLiteral},
+			Rule: ast.Rule{Identity: RuleLiteral, Name: `RuleLiteral`},
 			Rules: ast.RuleCollection{
 				ast.RuleReference{Target: RuleLiteralBoolean},
 				ast.RuleReference{Target: RuleLiteralNull},
@@ -194,7 +194,7 @@ var Grammar = ast.Grammar{
 		},
 		// Literal String
 		ast.RuleConcatenation{
-			Rule: ast.Rule{Identity: RuleLiteralString},
+			Rule: ast.Rule{Identity: RuleLiteralString, Name: `RuleLiteralString`},
 			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenSyntaxQuoteDouble}, // Double Quote
 				ast.RuleToken{Target: TokenLiteralString},     // Characters
@@ -203,7 +203,7 @@ var Grammar = ast.Grammar{
 		},
 		// Literal Boolean
 		ast.RuleChoice{
-			Rule: ast.Rule{Identity: RuleLiteralBoolean},
+			Rule: ast.Rule{Identity: RuleLiteralBoolean, Name: `RuleLiteralBoolean`},
 			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenLiteralBooleanFalse},
 				ast.RuleToken{Target: TokenLiteralBooleanTrue},
@@ -211,7 +211,7 @@ var Grammar = ast.Grammar{
 		},
 		// Literal Null
 		ast.RuleChoice{
-			Rule: ast.Rule{Identity: RuleLiteralNull},
+			Rule: ast.Rule{Identity: RuleLiteralNull, Name: `RuleLiteralNull`},
 			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenLiteralNull},
 			},
@@ -220,14 +220,14 @@ var Grammar = ast.Grammar{
 		//  A float is technically an integer with trailing parts, so its important
 		//  the integer is placed below this rule in heirarchy.
 		ast.RuleChoice{
-			Rule: ast.Rule{Identity: RuleLiteralFloat},
+			Rule: ast.Rule{Identity: RuleLiteralFloat, Name: `RuleLiteralFloat`},
 			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenLiteralFloat},
 			},
 		},
 		// Literal Integer
 		ast.RuleChoice{
-			Rule: ast.Rule{Identity: RuleLiteralInteger},
+			Rule: ast.Rule{Identity: RuleLiteralInteger, Name: `RuleLiteralInteger`},
 			Rules: ast.RuleCollection{
 				ast.RuleToken{Target: TokenLiteralInteger},
 			},

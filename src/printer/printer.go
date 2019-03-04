@@ -63,10 +63,18 @@ func (printer NodePrinter) printNodeRule(grammar ast.GrammarKind, node ast.NodeR
 func prepareNodeRuleOutput(grammar ast.GrammarKind, node ast.NodeRule) string {
 	rid := node.GetRuleIdentity()
 
+	_, rule := grammar.FindRule(rid)
+	name := rule.GetName()
+
+	if name == "" {
+		name = "unknown"
+	}
+
 	return fmt.Sprintf(
-		`%s: %s`,
+		`%s: %s/%s`,
 		color.WhiteString(`%T`, node),
-		color.YellowString(`%d`, rid),
+		color.YellowString(`%s`, name),
+		fmt.Sprintf(`%d`, rid),
 	)
 }
 
