@@ -31,6 +31,8 @@ type TokenIdentity int
 // Zero is reserved for cases where an invalid token identity is needed.
 const TokenIdentityNone TokenIdentity = 0
 
+type TokenIdentityCollection []TokenIdentity
+
 type TokenName string
 
 const TokenNameNone = ""

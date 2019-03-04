@@ -7,12 +7,14 @@ type GrammarKind interface {
 	FindNamespace(id NamespaceIdentity) (found bool, namespace NamespaceKind)
 	FindRule(id RuleIdentity) (found bool, rule RuleKind)
 	GetRules() RuleCollection
+	IsTokenIgnored(id TokenIdentity) bool
 }
 
-// Grammar is a fully implemented `GrammarKind`.
+// Grammar is a base implementing of GrammarKind.
 type Grammar struct {
-	Namespaces NamespaceCollection
-	Rules      RuleCollection
+	Namespaces   NamespaceCollection
+	Rules        RuleCollection
+	IgnoreTokens TokenIdentityCollection
 }
 
 // FindRootNamespace is a shortcut method to find a namespace with the root identity.
@@ -49,4 +51,17 @@ func (grammar Grammar) FindRule(id RuleIdentity) (bool, RuleKind) {
 // GetRules will return all defined rules against the grammar.
 func (grammar Grammar) GetRules() RuleCollection {
 	return grammar.Rules
+}
+
+// IsTokenIgnored will return true if the token is mentioned in the ignore token collection.
+// This denotes a token that is not important information to store in the parsed tree.
+// For example whitespace in most languages is nothing but for the developers experience.
+func (grammar Grammar) IsTokenIgnored(id TokenIdentity) bool {
+	for _, token := range grammar.IgnoreTokens {
+		if token == id {
+			return true
+		}
+	}
+
+	return false
 }

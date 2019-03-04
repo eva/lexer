@@ -10,6 +10,8 @@ type RuleToken struct {
 // Assuming the sequence contains the target token in its first position the match is considered successful.
 // The kind of node returned will always be an instance of ast.NodeLexeme.
 func (rule RuleToken) Match(grammar GrammarKind, sequence LexemeSequence) (bool, LexemeSequence, NodeKind, error) {
+	id := rule.Target
+
 	if sequence.IsEmpty() {
 		err := NewErrRuleSequenceEmpty(rule)
 		return false, sequence, nil, err
@@ -17,13 +19,20 @@ func (rule RuleToken) Match(grammar GrammarKind, sequence LexemeSequence) (bool,
 
 	lexeme := sequence[0]
 
-	if lexeme.IsTokenIdentity(rule.Target) == false {
-		err := NewErrRuleTokenMatchFailure(rule, rule.Target, lexeme)
+	if lexeme.IsTokenIdentity(id) == false {
+		err := NewErrRuleTokenMatchFailure(rule, id, lexeme)
 		return false, sequence, nil, err
 	}
 
-	node := NewLexemeNode(lexeme)
 	remaining := sequence[1:]
 
+	// The token can be ignored from the grammar.
+	// In this case the match was a sucess but a null node is returned.
+	if grammar.IsTokenIgnored(id) {
+		node := NodeNull{}
+		return true, remaining, node, nil
+	}
+
+	node := NewLexemeNode(lexeme)
 	return true, remaining, node, nil
 }

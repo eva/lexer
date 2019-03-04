@@ -227,3 +227,38 @@ func TestRuleToken_Match_ManyTokenInSequence(test *testing.T) {
 		test.Errorf(`Expected remaining sequence to be of count 2, instead got: %d`, remaining.Count())
 	}
 }
+
+func TestRuleToken_Match_NullNodeWhenIgnoreInGrammar(test *testing.T) {
+	grammar := Grammar{
+		IgnoreTokens: TokenIdentityCollection{
+			1,
+		},
+	}
+
+	sequence := LexemeSequence{
+		Lexeme{Token: 1},
+	}
+
+	rule := RuleToken{
+		Rule:   Rule{Identity: 1},
+		Target: 1,
+	}
+
+	matched, _, node, _ := rule.Match(grammar, sequence)
+
+	if matched == false {
+		test.Error(`Expected rule to have matched`)
+	}
+
+	if node == nil {
+		test.Error(`Expected rule to have matched with a node`)
+		return
+	}
+
+	_, casted := node.(NodeNull)
+
+	if casted == false {
+		test.Errorf(`Expected node to be instance of ast.NodeNull, instead got: %#v`, node)
+		return
+	}
+}

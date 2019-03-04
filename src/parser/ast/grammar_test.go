@@ -193,3 +193,21 @@ func TestGrammar_FindRule_CanMatchRule(test *testing.T) {
 		return
 	}
 }
+
+func TestGrammar_IsTokenIgnored(test *testing.T) {
+	grammar := Grammar{
+		IgnoreTokens: TokenIdentityCollection{
+			1,
+			2,
+			3,
+		},
+	}
+
+	if grammar.IsTokenIgnored(4) == true {
+		test.Error(`The token should not be ignored when not mentioned in the ignored token collection`)
+	}
+
+	if grammar.IsTokenIgnored(3) == false {
+		test.Error(`The token should be ignored when mentioned in the ignored token collection`)
+	}
+}

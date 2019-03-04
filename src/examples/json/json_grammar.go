@@ -106,6 +106,9 @@ var OptionalWhitespace = ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhi
 
 // Grammar represents the PHP grammar.
 var Grammar = ast.Grammar{
+	IgnoreTokens: ast.TokenIdentityCollection{
+		TokenWhitespace,
+	},
 	Namespaces: ast.NamespaceCollection{
 		ast.Namespace{
 			Identity: NamespaceRoot,
