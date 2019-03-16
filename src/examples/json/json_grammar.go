@@ -47,6 +47,9 @@ const (
 	GrammarRuleRangeLower ast.RuleIdentity = iota + 1
 
 	// 2
+	RuleGrammar
+
+	// 3
 	RuleLiteral
 	RuleLiteralNull
 	RuleLiteralBoolean
@@ -54,7 +57,7 @@ const (
 	RuleLiteralInteger
 	RuleLiteralString
 
-	// 8
+	// 9
 	RuleValue
 	RuleArray
 	RuleObject
@@ -68,10 +71,7 @@ var OptionalWhitespace = ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhi
 
 // Grammar represents the PHP grammar.
 var Grammar = ast.Grammar{
-	IgnoreTokens: ast.TokenIdentityCollection{
-		TokenWhitespace,
-		TokenSyntaxQuoteDouble,
-	},
+	IgnoreTokens: ast.TokenIdentityCollection{},
 	Namespaces: ast.NamespaceCollection{
 		ast.Namespace{
 			Identity: NamespaceRoot,
@@ -102,6 +102,15 @@ var Grammar = ast.Grammar{
 		},
 	},
 	Rules: ast.RuleCollection{
+		// Grammar
+		ast.RuleConcatenation{
+			Rule: ast.Rule{Identity: RuleGrammar, Name: `RuleGrammar`},
+			Rules: ast.RuleCollection{
+				OptionalWhitespace,
+				ast.RuleReference{Target: RuleValue},
+				OptionalWhitespace,
+			},
+		},
 		// Value
 		ast.RuleChoice{
 			Rule: ast.Rule{Identity: RuleValue, Name: `RuleValue`},

@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
-	"strings"
 	"time"
 
 	examples "./examples/json"
@@ -18,12 +18,28 @@ func main() {
 	grammar := examples.Grammar
 
 	reader := bufio.NewReader(os.Stdin)
+	input := ""
 
-	text, _ := reader.ReadString('\n')
-	text = strings.Trim(text, "\n")
+	fmt.Println(color.YellowString("Reading .."))
 
-	fmt.Println(color.YellowString(fmt.Sprintf("Read %d characters:", len(text))))
-	fmt.Println(fmt.Sprintf("%s", text))
+	line := 1
+
+	for {
+		read, err := reader.ReadString('\n')
+		if err != nil && err == io.EOF {
+			break
+		}
+
+		fmt.Printf(color.CyanString("%4d | %s", line, read))
+
+		input = input + read
+		line++
+	}
+
+	text := input
+
+	fmt.Println("")
+	fmt.Println(color.YellowString(fmt.Sprintf("Read %d characters .. ", len(text))))
 	fmt.Println("")
 
 	tokenisestart := time.Now()
