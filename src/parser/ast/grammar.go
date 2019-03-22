@@ -5,6 +5,7 @@ package ast
 type GrammarKind interface {
 	FindRootNamespace() (found bool, namespace NamespaceKind)
 	FindNamespace(id NamespaceIdentity) (found bool, namespace NamespaceKind)
+	FindToken(id TokenIdentity) (found bool, token TokenKind)
 	FindRule(id RuleIdentity) (found bool, rule RuleKind)
 	GetRules() RuleCollection
 	IsTokenIgnored(id TokenIdentity) bool
@@ -29,6 +30,18 @@ func (grammar Grammar) FindNamespace(id NamespaceIdentity) (bool, NamespaceKind)
 	for _, namespace := range grammar.Namespaces {
 		if namespace.GetIdentity() == id {
 			return true, namespace
+		}
+	}
+
+	return false, nil
+}
+
+func (grammar Grammar) FindToken(id TokenIdentity) (found bool, token TokenKind) {
+	for _, namespace := range grammar.Namespaces {
+		for _, token := range namespace.GetTokens() {
+			if token.GetIdentity() == id {
+				return true, token
+			}
 		}
 	}
 

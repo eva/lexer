@@ -6,6 +6,10 @@ type RuleToken struct {
 	Target TokenIdentity
 }
 
+func (rule RuleToken) FindToken(grammar GrammarKind) (bool, TokenKind) {
+	return grammar.FindToken(rule.Target)
+}
+
 // Match will attempt to match the target token against the given sequence.
 // Assuming the sequence contains the target token in its first position the match is considered successful.
 // The kind of node returned will always be an instance of ast.NodeLexeme.
