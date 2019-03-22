@@ -12,6 +12,42 @@ func TestToken_IsTokenKind(test *testing.T) {
 	}
 }
 
+func TestToken_GetIdentity(test *testing.T) {
+	token := Token{
+		Identity: 123,
+	}
+
+	if token.GetIdentity() != 123 {
+		test.Error(`Expected to get given TokenIdentity`)
+	}
+}
+
+func TestToken_GetIdentity_Uninitialised(test *testing.T) {
+	token := Token{}
+
+	if token.GetIdentity() != 0 {
+		test.Error(`Expected GetIdentity to return expected 0 value`)
+	}
+}
+
+func TestToken_GetName(test *testing.T) {
+	token := Token{
+		Name: `foo`,
+	}
+
+	if token.GetName() != `foo` {
+		test.Error(`Expected to get given TokenName`)
+	}
+}
+
+func TestToken_GetName_Uninitialised(test *testing.T) {
+	token := Token{}
+
+	if token.GetName() != `` {
+		test.Error(`Expected GetName to return expected empty value`)
+	}
+}
+
 func TestToken_CannotTransition(test *testing.T) {
 	token := Token{}
 	should, namespace := token.HasTransition()

@@ -57,10 +57,12 @@ type Token struct {
 	TransitionTo NamespaceIdentity
 }
 
+// GetIdentity will return the given TokenIdentity.
 func (token Token) GetIdentity() TokenIdentity {
 	return token.Identity
 }
 
+// GetName will return the given TokenName.
 func (token Token) GetName() TokenName {
 	return token.Name
 }

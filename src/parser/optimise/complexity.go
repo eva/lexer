@@ -14,7 +14,7 @@ func calculateTokenComplexity(grammar ast.GrammarKind, token ast.TokenKind) (int
 	switch token.(type) {
 	case ast.TokenLiteral:
 		return 1, nil
-	case ast.TokenRegex:
+	case ast.TokenExpression:
 		return 5, nil
 	}
 

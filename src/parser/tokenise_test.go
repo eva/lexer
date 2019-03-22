@@ -16,7 +16,7 @@ func TestTokenise(test *testing.T) {
 					ast.TokenLiteral{Token: ast.Token{Identity: 1}, Literal: "foo"},
 					ast.TokenLiteral{Token: ast.Token{Identity: 2}, Literal: "thing"},
 					ast.TokenLiteral{Token: ast.Token{Identity: 3}, Literal: "some"},
-					ast.TokenRegex{Token: ast.Token{Identity: 4}, Expression: regexp.MustCompile(`b(ox|atter)`)},
+					ast.TokenExpression{Token: ast.Token{Identity: 4}, Expression: regexp.MustCompile(`b(ox|atter)`)},
 				},
 			},
 		},
@@ -84,7 +84,7 @@ func TestTokeniseTraverseNamespace_StringQuoteExample(test *testing.T) {
 				Identity: "string-double-quoted",
 				Tokens: ast.TokenCollection{
 					ast.TokenLiteral{Token: ast.Token{Identity: 100, TransitionTo: ast.NamespaceIdentityShift}, Literal: `"`},
-					ast.TokenRegex{Token: ast.Token{Identity: 2}, Expression: regexp.MustCompile(`(\\\"|[^"])+`)},
+					ast.TokenExpression{Token: ast.Token{Identity: 2}, Expression: regexp.MustCompile(`(\\\"|[^"])+`)},
 				},
 			},
 		},

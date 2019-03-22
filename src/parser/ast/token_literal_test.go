@@ -8,16 +8,15 @@ func TestTokenLiteral_IsTokenKind(test *testing.T) {
 
 	if instanceof == false {
 		test.Error(`Expected TokenLiteral to be of TokenKind`)
-		return
 	}
 }
 
 func TestTokenLiteral_Match(test *testing.T) {
 	dataset := []struct {
-		input      string
-		expression string
-		matched    bool
-		offset     TokenOffset
+		input   string
+		value   string
+		matched bool
+		offset  TokenOffset
 	}{
 		{"foo", "bar", false, NoTokenOffset},
 		{"bar", "bard", false, NoTokenOffset},
@@ -33,7 +32,7 @@ func TestTokenLiteral_Match(test *testing.T) {
 		i = i + 1
 
 		token := TokenLiteral{
-			Literal: data.expression,
+			Literal: data.value,
 		}
 
 		matched, offset := token.Match(data.input)
@@ -52,5 +51,45 @@ func TestTokenLiteral_Match(test *testing.T) {
 			test.Errorf(`[%d] Offset %v was expected to match %v`, i, offset, data.offset)
 			return
 		}
+	}
+}
+
+func BenchmarkTokenLiteralMatch_MatchWord(b *testing.B) {
+	token := TokenLiteral{
+		Literal: `foo`,
+	}
+
+	for i := 0; i < b.N; i++ {
+		token.Match(`foo`)
+	}
+}
+
+func BenchmarkTokenLiteralMatch_MatchCharacter(b *testing.B) {
+	token := TokenLiteral{
+		Literal: `a`,
+	}
+
+	for i := 0; i < b.N; i++ {
+		token.Match(`a`)
+	}
+}
+
+func BenchmarkTokenLiteralMatch_MatchPartial(b *testing.B) {
+	token := TokenLiteral{
+		Literal: `foo`,
+	}
+
+	for i := 0; i < b.N; i++ {
+		token.Match(`foobar`)
+	}
+}
+
+func BenchmarkTokenLiteralMatch_MissMatch(b *testing.B) {
+	token := TokenLiteral{
+		Literal: `foo`,
+	}
+
+	for i := 0; i < b.N; i++ {
+		token.Match(`bar`)
 	}
 }
