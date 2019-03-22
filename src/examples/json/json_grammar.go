@@ -76,14 +76,6 @@ var Grammar = ast.Grammar{
 		ast.Namespace{
 			Identity: NamespaceRoot,
 			Tokens: ast.TokenCollection{
-				ast.TokenExpression{Token: ast.Token{Identity: TokenWhitespace, Name: `TokenWhitespace`}, Expression: regexp.MustCompile(`\s+`)},
-
-				ast.TokenExpression{Token: ast.Token{Identity: TokenLiteralFloat, Name: `TokenLiteralFloat`}, Expression: regexp.MustCompile(`[0-9]+\.[0-9]+`)},
-				ast.TokenExpression{Token: ast.Token{Identity: TokenLiteralInteger, Name: `TokenLiteralInteger`}, Expression: regexp.MustCompile(`[0-9]+`)},
-				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralBooleanTrue, Name: `TokenLiteralBooleanTrue`}, Literal: `true`},
-				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralBooleanFalse, Name: `TokenLiteralBooleanFalse`}, Literal: `false`},
-				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralNull, Name: `TokenLiteralNull`}, Literal: `null`},
-
 				ast.TokenRune{Token: ast.Token{Identity: TokenSyntaxColon, Name: `TokenSyntaxColon`}, Rune: ':'},
 				ast.TokenRune{Token: ast.Token{Identity: TokenSyntaxComma, Name: `TokenSyntaxComma`}, Rune: ','},
 				ast.TokenRune{Token: ast.Token{Identity: TokenSyntaxQuoteDouble, Name: `TokenSyntaxQuoteDouble`, TransitionTo: NamespaceString}, Rune: '"'},
@@ -91,6 +83,14 @@ var Grammar = ast.Grammar{
 				ast.TokenRune{Token: ast.Token{Identity: TokenSyntaxCurlyBraceClose, Name: `TokenSyntaxCurlyBraceClose`}, Rune: '}'},
 				ast.TokenRune{Token: ast.Token{Identity: TokenSyntaxSquareBracketOpen, Name: `TokenSyntaxSquareBracketOpen`}, Rune: '['},
 				ast.TokenRune{Token: ast.Token{Identity: TokenSyntaxSquareBracketClose, Name: `TokenSyntaxSquareBracketClose`}, Rune: ']'},
+
+				ast.TokenExpression{Token: ast.Token{Identity: TokenWhitespace, Name: `TokenWhitespace`}, Expression: regexp.MustCompile(`\s+`)},
+
+				ast.TokenExpression{Token: ast.Token{Identity: TokenLiteralFloat, Name: `TokenLiteralFloat`}, Expression: regexp.MustCompile(`[0-9]+\.[0-9]+`)},
+				ast.TokenExpression{Token: ast.Token{Identity: TokenLiteralInteger, Name: `TokenLiteralInteger`}, Expression: regexp.MustCompile(`[0-9]+`)},
+				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralBooleanTrue, Name: `TokenLiteralBooleanTrue`}, Literal: `true`},
+				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralBooleanFalse, Name: `TokenLiteralBooleanFalse`}, Literal: `false`},
+				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralNull, Name: `TokenLiteralNull`}, Literal: `null`},
 			},
 		},
 		ast.Namespace{
