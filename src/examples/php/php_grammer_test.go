@@ -1,7 +1,6 @@
 package php
 
 import (
-	"log"
 	"testing"
 
 	"../../parser"
@@ -89,7 +88,7 @@ func TestParseGrammar_BasicExpressionSelfReference(test *testing.T) {
 		return
 	}
 
-	log.Printf(`%#v`, node)
+	// log.Printf(`%#v`, node)
 }
 
 func TestTokeniseGrammar(test *testing.T) {

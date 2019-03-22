@@ -1,7 +1,6 @@
 package json
 
 import (
-	"fmt"
 	"testing"
 
 	"../../parser"
@@ -94,5 +93,5 @@ func TestParseGrammar_ObjectWithSinglePair(test *testing.T) {
 		test.Error(`Expected node sequence to be greater than 2`)
 	}
 
-	fmt.Printf(`%#v`, node)
+	// fmt.Printf(`%#v`, node)
 }
