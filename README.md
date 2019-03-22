@@ -18,5 +18,5 @@ With this please use this with a grain of salt (if you must use this at all).
 The make file provides the following rule to help with testing:
 
 ```sh
-$ make test
+make test
 ```

@@ -28,8 +28,8 @@ func TestParseGrammar_BasicLiteral(test *testing.T) {
 		return
 	}
 
-	if literal.GetRuleIdentity() != RuleLiteral {
-		test.Errorf(`Expected returned rule to be %#v, instead got %#v`, RuleLiteral, literal.GetRuleIdentity())
+	if literal.GetRuleIdentity() != RuleGrammar {
+		test.Errorf(`Expected returned rule to be %#v, instead got %#v`, RuleGrammar, literal.GetRuleIdentity())
 		return
 	}
 
