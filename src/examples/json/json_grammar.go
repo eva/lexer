@@ -36,13 +36,13 @@ const (
 	GrammarTokenRangeUpper
 )
 
-// PHP lexical namespaces.
+// JSON lexical namespaces.
 const (
 	NamespaceRoot   ast.NamespaceIdentity = ast.NamespaceIdentityRoot
 	NamespaceString ast.NamespaceIdentity = "string"
 )
 
-// PHP lexical rules.
+// JSON lexical rules.
 const (
 	GrammarRuleRangeLower ast.RuleIdentity = iota + 1
 
@@ -69,7 +69,7 @@ const (
 // OptionalWhitespace quick hand.
 var OptionalWhitespace = ast.RuleOptional{Target: ast.RuleToken{Target: TokenWhitespace}}
 
-// Grammar represents the PHP grammar.
+// Grammar represents the JSON grammar.
 var Grammar = ast.Grammar{
 	IgnoreTokens: ast.TokenIdentityCollection{},
 	Namespaces: ast.NamespaceCollection{
