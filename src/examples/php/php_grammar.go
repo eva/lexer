@@ -70,10 +70,10 @@ var Grammar = ast.Grammar{
 		ast.Namespace{
 			Identity: NamespaceRoot,
 			Tokens: ast.TokenCollection{
-				ast.TokenRegex{Token: ast.Token{Identity: TokenWhitespace}, Expression: regexp.MustCompile(`\s+`)},
+				ast.TokenExpression{Token: ast.Token{Identity: TokenWhitespace}, Expression: regexp.MustCompile(`\s+`)},
 
-				ast.TokenRegex{Token: ast.Token{Identity: TokenLiteralFloat}, Expression: regexp.MustCompile(`[0-9]+\.[0-9]+`)},
-				ast.TokenRegex{Token: ast.Token{Identity: TokenLiteralInteger}, Expression: regexp.MustCompile(`[0-9]+`)},
+				ast.TokenExpression{Token: ast.Token{Identity: TokenLiteralFloat}, Expression: regexp.MustCompile(`[0-9]+\.[0-9]+`)},
+				ast.TokenExpression{Token: ast.Token{Identity: TokenLiteralInteger}, Expression: regexp.MustCompile(`[0-9]+`)},
 				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralBooleanTrue}, Literal: `true`},
 				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralBooleanFalse}, Literal: `false`},
 				ast.TokenLiteral{Token: ast.Token{Identity: TokenLiteralNull}, Literal: `null`},
@@ -97,13 +97,13 @@ var Grammar = ast.Grammar{
 		ast.Namespace{
 			Identity: NamespaceVariable,
 			Tokens: ast.TokenCollection{
-				ast.TokenRegex{Token: ast.Token{Identity: TokenIdentifier, TransitionTo: ast.NamespaceIdentityShift}, Expression: regexp.MustCompile(`[a-zA-Z\_]{1}[a-zA-Z0-9\_]*`)},
+				ast.TokenExpression{Token: ast.Token{Identity: TokenIdentifier, TransitionTo: ast.NamespaceIdentityShift}, Expression: regexp.MustCompile(`[a-zA-Z\_]{1}[a-zA-Z0-9\_]*`)},
 			},
 		},
 		ast.Namespace{
 			Identity: NamespaceString,
 			Tokens: ast.TokenCollection{
-				ast.TokenRegex{Token: ast.Token{Identity: TokenLiteralString}, Expression: regexp.MustCompile(`(\\\"|[^"])+`)},
+				ast.TokenExpression{Token: ast.Token{Identity: TokenLiteralString}, Expression: regexp.MustCompile(`(\\\"|[^"])+`)},
 				ast.TokenLiteral{Token: ast.Token{Identity: TokenSyntaxQuoteDouble, TransitionTo: ast.NamespaceIdentityShift}, Literal: `"`},
 			},
 		},
